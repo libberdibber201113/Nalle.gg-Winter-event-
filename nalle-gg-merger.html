@@ -1,0 +1,2973 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NALLE.GG — Christmas Winter Event & Case Opening Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Chakra+Petch:ital,wght@0,600;0,700;1,700&family=JetBrains+Mono:wght@500;700&family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rarity-common: #4b69ff;
+            --rarity-rare: #8847ff;
+            --rarity-epic: #d32ce6;
+            --rarity-legendary: #eb4b4b;
+            --rarity-mystical: #ffd700;
+            --rarity-santa: #ff3344;
+            --rarity-snowman: #38bdf8;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #060911;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(220, 38, 38, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 15%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 50% 80%, rgba(255, 215, 0, 0.06) 0%, transparent 55%),
+                linear-gradient(180deg, #05080e 0%, #0b111e 100%);
+            color: #f1f5f9;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .font-display { font-family: 'Chakra Petch', sans-serif; }
+        .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
+        .font-holiday { font-family: 'Mountains of Christmas', cursive; }
+
+        /* Authentic Rarity Styling */
+        .rarity-card-common {
+            background: linear-gradient(180deg, rgba(17, 23, 38, 0.95) 0%, rgba(75, 105, 255, 0.22) 100%);
+            border: 1px solid rgba(75, 105, 255, 0.35);
+            border-bottom: 4px solid #4b69ff;
+        }
+        .rarity-card-rare {
+            background: linear-gradient(180deg, rgba(20, 17, 38, 0.95) 0%, rgba(136, 71, 255, 0.25) 100%);
+            border: 1px solid rgba(136, 71, 255, 0.4);
+            border-bottom: 4px solid #8847ff;
+        }
+        .rarity-card-epic {
+            background: linear-gradient(180deg, rgba(28, 14, 36, 0.95) 0%, rgba(211, 44, 230, 0.3) 100%);
+            border: 1px solid rgba(211, 44, 230, 0.45);
+            border-bottom: 4px solid #d32ce6;
+        }
+        .rarity-card-legendary {
+            background: linear-gradient(180deg, rgba(38, 14, 18, 0.95) 0%, rgba(235, 75, 75, 0.35) 100%);
+            border: 1px solid rgba(235, 75, 75, 0.55);
+            border-bottom: 4px solid #eb4b4b;
+            box-shadow: 0 0 15px rgba(235, 75, 75, 0.2);
+        }
+        .rarity-card-mystical {
+            background: radial-gradient(circle at 50% 35%, rgba(255, 250, 180, 0.45) 0%, rgba(255, 195, 0, 0.35) 55%, rgba(45, 32, 5, 0.96) 100%);
+            border: 2px solid #ffe600;
+            border-bottom: 5px solid #ffd700;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.75), inset 0 0 35px rgba(255, 230, 0, 0.4);
+            animation: mysticalPulse 1.4s infinite alternate ease-in-out;
+        }
+        .rarity-card-santa {
+            background: radial-gradient(circle at 50% 30%, rgba(255, 220, 220, 0.5) 0%, rgba(220, 38, 38, 0.45) 50%, rgba(25, 4, 8, 0.98) 100%);
+            border: 2px solid #ff4455;
+            border-bottom: 5px solid #ffd700;
+            box-shadow: 0 0 35px rgba(239, 68, 68, 0.8), inset 0 0 30px rgba(255, 215, 0, 0.45);
+            animation: santaPulse 1.2s infinite alternate ease-in-out;
+        }
+        .rarity-card-snowman {
+            background: radial-gradient(circle at 50% 30%, rgba(224, 242, 254, 0.6) 0%, rgba(56, 189, 248, 0.4) 50%, rgba(8, 47, 73, 0.98) 100%);
+            border: 2px solid #38bdf8;
+            border-bottom: 5px solid #0284c7;
+            box-shadow: 0 0 35px rgba(56, 189, 248, 0.8), inset 0 0 30px rgba(255, 255, 255, 0.45);
+            animation: snowmanPulse 1.2s infinite alternate ease-in-out;
+        }
+
+        @keyframes mysticalPulse {
+            0% { box-shadow: 0 0 18px rgba(255, 215, 0, 0.65); filter: brightness(1); }
+            100% { box-shadow: 0 0 40px rgba(255, 238, 88, 0.95), 0 0 60px rgba(255, 180, 0, 0.5); filter: brightness(1.12); }
+        }
+
+        @keyframes santaPulse {
+            0% { box-shadow: 0 0 22px rgba(239, 68, 68, 0.7), inset 0 0 20px rgba(255, 215, 0, 0.4); filter: brightness(1); }
+            100% { box-shadow: 0 0 45px rgba(255, 68, 68, 0.95), 0 0 70px rgba(255, 215, 0, 0.6), inset 0 0 35px rgba(255, 255, 255, 0.5); filter: brightness(1.15); }
+        }
+
+        @keyframes snowmanPulse {
+            0% { box-shadow: 0 0 22px rgba(56, 189, 248, 0.7), inset 0 0 20px rgba(255, 255, 255, 0.4); filter: brightness(1); }
+            100% { box-shadow: 0 0 45px rgba(56, 189, 248, 0.95), 0 0 70px rgba(186, 230, 253, 0.6), inset 0 0 35px rgba(255, 255, 255, 0.6); filter: brightness(1.15); }
+        }
+
+        @keyframes spinHalo {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .halo-spin {
+            transform-origin: 100px 92px;
+            animation: spinHalo 10s linear infinite;
+        }
+
+        /* Holiday String Lights */
+        .holiday-lights {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            height: 14px;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .holiday-bulb {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: bulbFlash 1.6s infinite alternate;
+        }
+        @keyframes bulbFlash {
+            0% { opacity: 0.35; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1.15); filter: drop-shadow(0 0 8px currentColor); }
+        }
+
+        /* Spinner Viewport */
+        .spinner-viewport {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, #04060b 0%, #0c121d 15%, #101726 50%, #0c121d 85%, #04060b 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.95), 0 10px 35px rgba(0, 0, 0, 0.6);
+        }
+        .spinner-viewport::before, .spinner-viewport::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 120px;
+            z-index: 20;
+            pointer-events: none;
+        }
+        .spinner-viewport::before {
+            left: 0;
+            background: linear-gradient(90deg, #05080e 10%, rgba(5, 8, 14, 0) 100%);
+        }
+        .spinner-viewport::after {
+            right: 0;
+            background: linear-gradient(270deg, #05080e 10%, rgba(5, 8, 14, 0) 100%);
+        }
+
+        .center-laser {
+            position: absolute;
+            top: 0; bottom: 0;
+            left: 50%;
+            width: 3px;
+            transform: translateX(-50%);
+            background: linear-gradient(180deg, #ffd700 0%, #ffffff 50%, #ffd700 100%);
+            box-shadow: 0 0 14px #ffd700, 0 0 28px rgba(255, 215, 0, 0.85);
+            z-index: 30;
+            pointer-events: none;
+        }
+        .center-laser::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-top: 12px solid #ffd700;
+        }
+        .center-laser::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-bottom: 12px solid #ffd700;
+        }
+
+        .reel-strip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            will-change: transform;
+            padding: 12px 0;
+        }
+
+        .reel-card {
+            width: 170px;
+            height: 204px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Screen Shake for Epic Drops */
+        @keyframes screenShake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            15% { transform: translate(-9px, -7px) rotate(-1deg); }
+            30% { transform: translate(9px, 5px) rotate(1deg); }
+            45% { transform: translate(-7px, 7px) rotate(-0.5deg); }
+            60% { transform: translate(7px, -5px) rotate(0.5deg); }
+            75% { transform: translate(-4px, 3px) rotate(-0.2deg); }
+        }
+        .shake-active {
+            animation: screenShake 0.75s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        /* Aurora Overlay for Santa */
+        #auroraOverlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 45;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            background: radial-gradient(circle at 50% 20%, rgba(34, 197, 94, 0.35) 0%, rgba(56, 189, 248, 0.25) 35%, rgba(168, 85, 247, 0.2) 65%, transparent 100%);
+            mix-blend-mode: screen;
+        }
+        #auroraOverlay.active {
+            opacity: 1;
+            animation: auroraWave 6s infinite alternate ease-in-out;
+        }
+        @keyframes auroraWave {
+            0% { transform: scale(1) translateY(0); filter: hue-rotate(0deg); }
+            100% { transform: scale(1.08) translateY(-20px); filter: hue-rotate(60deg); }
+        }
+
+        #snowCanvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        #blizzardCanvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 48;
+        }
+        /* ===== MERGER ===== */
+        .merge-hold { --p: 0%; background: linear-gradient(90deg, rgba(255,255,255,.45) var(--p), transparent var(--p)), linear-gradient(90deg, #a855f7, #ec4899, #f59e0b); touch-action: none; -webkit-touch-callout: none; }
+        .merge-hold:disabled { filter: grayscale(1); opacity: .45; cursor: not-allowed; }
+        .mrg-rays { position: absolute; inset: -12%; border-radius: 50%; opacity: 0; transition: opacity .8s; pointer-events: none;
+            background: repeating-conic-gradient(from 0deg, var(--mrg) 0 5deg, transparent 5deg 20deg);
+            -webkit-mask-image: radial-gradient(circle, #000 0, transparent 68%); mask-image: radial-gradient(circle, #000 0, transparent 68%);
+            animation: spinHalo 16s linear infinite; }
+        .mrg-rays.on { opacity: .5; }
+        .mrg-compat { box-shadow: 0 0 16px var(--mrg); }
+    </style>
+</head>
+<body class="selection:bg-red-500 selection:text-white">
+
+    <!-- Snow and Particle Canvases -->
+    <canvas id="snowCanvas"></canvas>
+    <canvas id="blizzardCanvas"></canvas>
+    <div id="auroraOverlay"></div>
+
+    <!-- Non-Blocking Toast Notification Container -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+    <!-- CHRISTMAS STRING LIGHTS -->
+    <div class="holiday-lights bg-[#04060a] border-b border-red-950/60">
+        <div class="holiday-bulb" style="background:#ef4444; color:#ef4444; animation-delay:0s;"></div>
+        <div class="holiday-bulb" style="background:#10b981; color:#10b981; animation-delay:0.3s;"></div>
+        <div class="holiday-bulb" style="background:#fbbf24; color:#fbbf24; animation-delay:0.6s;"></div>
+        <div class="holiday-bulb" style="background:#38bdf8; color:#38bdf8; animation-delay:0.9s;"></div>
+        <div class="holiday-bulb" style="background:#ec4899; color:#ec4899; animation-delay:1.2s;"></div>
+        <div class="holiday-bulb" style="background:#ef4444; color:#ef4444; animation-delay:0.4s;"></div>
+        <div class="holiday-bulb" style="background:#10b981; color:#10b981; animation-delay:0.8s;"></div>
+        <div class="holiday-bulb" style="background:#fbbf24; color:#fbbf24; animation-delay:0.2s;"></div>
+        <div class="holiday-bulb" style="background:#38bdf8; color:#38bdf8; animation-delay:1.1s;"></div>
+    </div>
+
+    <!-- LIVE GLOBAL DROP TICKER -->
+    <div class="w-full bg-[#05070d] border-b border-slate-800/80 h-11 flex items-center px-3 gap-3 overflow-hidden relative z-30">
+        <div class="flex items-center gap-1.5 bg-red-950/80 border border-red-700/60 px-2.5 py-1 rounded-lg shrink-0">
+            <span class="text-xs">🎄</span>
+            <span class="text-[10px] font-display font-bold tracking-wider uppercase text-red-300">WINTER DROPS</span>
+        </div>
+        <div id="liveTickerContainer" class="flex items-center gap-2 overflow-x-auto py-1 flex-1"></div>
+    </div>
+
+    <!-- TOP NAVIGATION & PERSISTENCE HEADER -->
+    <header class="sticky top-0 z-30 backdrop-blur-xl bg-[#080d18]/95 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-red-500 via-amber-400 to-emerald-500 p-0.5 shadow-lg shadow-red-500/25">
+                    <div class="w-full h-full bg-[#090e1a] rounded-[10px] flex items-center justify-center">
+                        <span class="text-2xl">🎅</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-black text-2xl tracking-wider bg-gradient-to-r from-white via-red-200 to-amber-300 bg-clip-text text-transparent">
+                            NALLE<span class="text-red-400">.GG</span>
+                        </span>
+                        <span class="text-[10px] font-holiday font-bold px-2 py-0.5 rounded bg-red-600/25 text-red-300 border border-red-500/40 text-sm">
+                            ❄️ Winter Event
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="autoSaveBadge" class="text-[11px] font-mono-tech text-emerald-400 flex items-center gap-1">
+                            <span id="savePulseDot" class="w-2 h-2 rounded-full bg-emerald-400 inline-block transition-transform"></span>
+                            <span id="autoSaveText">AUTO-SAVED</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+                <button onclick="switchTab('cases')" id="tabBtn-cases" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-display font-bold tracking-wide transition-all bg-gradient-to-r from-red-500 via-amber-500 to-yellow-500 text-slate-950 shadow-md">
+                    🎁 CASES
+                </button>
+                <button onclick="switchTab('upgrader')" id="tabBtn-upgrader" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-display font-bold tracking-wide transition-all text-slate-300 hover:text-white">
+                    ⚡ UPGRADER
+                </button>
+                <button onclick="switchTab('merger')" id="tabBtn-merger" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-display font-bold tracking-wide transition-all text-slate-300 hover:text-white">
+                    🧬 MERGER
+                </button>
+                <button onclick="switchTab('inventory')" id="tabBtn-inventory" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-display font-bold tracking-wide transition-all text-slate-300 hover:text-white flex items-center gap-1.5">
+                    🎒 INVENTORY
+                    <span id="navInvCount" class="px-1.5 py-0.2 bg-slate-800 text-amber-400 rounded text-xs font-mono-tech">0</span>
+                </button>
+                <button onclick="switchTab('gallery')" id="tabBtn-gallery" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-display font-bold tracking-wide transition-all text-slate-300 hover:text-white">
+                    ✨ SKIN GALLERY
+                </button>
+            </nav>
+
+            <!-- Wallet & Persistence Controls -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Cash Balance -->
+                <div class="flex items-center bg-slate-900/95 border border-emerald-500/40 rounded-xl px-3.5 py-1.5 shadow-inner">
+                    <div>
+                        <span class="block text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Balance</span>
+                        <span id="balanceDisplay" class="font-mono-tech font-bold text-base sm:text-lg text-emerald-400">$250.00</span>
+                    </div>
+                    <button id="bailoutBtn" onclick="claimBankruptcyBailout()" class="hidden ml-3 bg-red-500/20 hover:bg-red-500/30 active:scale-95 text-red-300 border border-red-500/40 px-2.5 py-1 rounded-lg text-[11px] font-bold transition">
+                        +$100 BAILOUT
+                    </button>
+                </div>
+
+                <!-- Save / Export / Import Controls -->
+                <div class="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 p-1 rounded-xl">
+                    <button onclick="downloadSaveFile()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 text-xs font-display font-bold transition flex items-center gap-1" title="Download .json save file">
+                        💾 <span class="hidden md:inline">Download Save (.json)</span>
+                    </button>
+                    <label class="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-display font-bold transition cursor-pointer flex items-center gap-1" title="Load .json save file">
+                        📂 <span class="hidden md:inline">Load Save (.json)</span>
+                        <input type="file" id="saveFileInput" accept=".json" onchange="handleLoadSaveFile(event)" class="hidden">
+                    </label>
+                    <button onclick="openResetModal()" class="px-2 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 text-xs font-display font-bold transition" title="Reset Save Data">
+                        🔄
+                    </button>
+                </div>
+
+                <button onclick="toggleSound()" id="soundToggleBtn" class="p-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-white transition" title="Toggle Sound">
+                    🔊
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN BODY CONTENT -->
+    <main class="max-w-7xl mx-auto px-4 py-6 space-y-8 relative z-20">
+
+        <!-- ========================================== -->
+        <!-- TAB 1: CASE OPENING ARENA                  -->
+        <!-- ========================================== -->
+        <section id="tab-cases" class="space-y-6">
+
+            <!-- Christmas Event Showcase (Fair Play - No Cheats) -->
+            <div class="rounded-2xl bg-gradient-to-r from-red-950/80 via-slate-900/90 to-emerald-950/80 border border-red-500/40 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+                <div class="flex items-center gap-4">
+                    <span class="text-4xl sm:text-5xl">🎄</span>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="font-display font-black text-xl sm:text-2xl text-white">CHRISTMAS WINTER EVENT IS LIVE!</h2>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-400 text-slate-950 uppercase">Limited Event</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-0.5">
+                            Winter Event: <b>Candy Cane Scarf</b>, <b>North Pole Sovereign</b>, the <b>0.01% ABSOLUTE SANTA</b>, and the new <b>$100,000 Snowman Case</b>!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case Selection & Lifetime Telemetry Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+                <!-- Cases Grid (Including $300.00 Winter Case and $100k Snowman Case) -->
+                <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3" id="caseSelectionGrid"></div>
+
+                <!-- Player Stats -->
+                <div class="lg:col-span-4 bg-slate-900/75 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                        <span class="text-xs font-display uppercase tracking-wider text-slate-400 font-bold">📊 Player Telemetry</span>
+                        <span id="mysticalHitBadge" class="text-[11px] font-mono-tech px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 font-bold">
+                            Grails Unboxed: 0
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 my-3 text-center">
+                        <div class="bg-slate-950/70 rounded-xl p-2 border border-slate-800/60">
+                            <span class="text-[10px] text-slate-400 uppercase block">Cases Opened</span>
+                            <span id="statCasesOpened" class="font-mono-tech font-bold text-base text-white">0</span>
+                        </div>
+                        <div class="bg-slate-950/70 rounded-xl p-2 border border-slate-800/60">
+                            <span class="text-[10px] text-slate-400 uppercase block">Inventory Val</span>
+                            <span id="statInvValue" class="font-mono-tech font-bold text-base text-amber-400">$0.00</span>
+                        </div>
+                        <div class="bg-slate-950/70 rounded-xl p-2 border border-slate-800/60">
+                            <span class="text-[10px] text-slate-400 uppercase block">Best Drop</span>
+                            <span id="statBestPull" class="font-mono-tech font-bold text-base text-emerald-400">$0.00</span>
+                        </div>
+                    </div>
+                    <!-- Odds Bar -->
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[10px] font-mono-tech">
+                            <span class="text-[#4b69ff]">Com <b id="oddLabelCommon">60.0%</b></span>
+                            <span class="text-[#8847ff]">Rare <b id="oddLabelRare">25.0%</b></span>
+                            <span class="text-[#d32ce6]">Epic <b id="oddLabelEpic">11.0%</b></span>
+                            <span class="text-[#eb4b4b]">Leg <b id="oddLabelLegendary">3.89%</b></span>
+                            <span class="text-[#ffd700]">MYST <b id="oddLabelMystical">0.1%</b></span>
+                            <span class="text-[#ff4455] font-bold">SANTA <b id="oddLabelSanta">0.01%</b></span>
+                        </div>
+                        <div class="w-full h-2 rounded-full overflow-hidden flex bg-slate-950">
+                            <div id="oddBarCommon" style="width: 60%" class="bg-[#4b69ff]"></div>
+                            <div id="oddBarRare" style="width: 25%" class="bg-[#8847ff]"></div>
+                            <div id="oddBarEpic" style="width: 11%" class="bg-[#d32ce6]"></div>
+                            <div id="oddBarLegendary" style="width: 3.89%" class="bg-[#eb4b4b]"></div>
+                            <div id="oddBarMystical" style="width: 1%" class="bg-[#ffd700]"></div>
+                            <div id="oddBarSanta" style="width: 1%" class="bg-[#ff4455]"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN CS:GO HORIZONTAL SPINNER STAGE -->
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl relative overflow-hidden">
+                <!-- Spinner Header Controls -->
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                    <div class="flex items-center gap-3">
+                        <span id="activeCaseBadge" class="px-3 py-1 rounded-lg text-xs font-display font-bold uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/40">
+                            ❄️ HOLIDAY CASE
+                        </span>
+                        <h2 id="activeCaseTitle" class="font-display font-bold text-lg sm:text-xl text-white">
+                            Winter Wonderland Case
+                        </h2>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <div class="flex items-center bg-slate-950/90 p-1 rounded-xl border border-slate-800">
+                            <span class="text-[11px] text-slate-400 px-2 font-medium">Reels:</span>
+                            <button onclick="setReelCount(1)" id="reelCountBtn-1" class="px-2.5 py-1 rounded-lg text-xs font-mono-tech font-bold bg-amber-500 text-slate-950">1x</button>
+                            <button onclick="setReelCount(2)" id="reelCountBtn-2" class="px-2.5 py-1 rounded-lg text-xs font-mono-tech font-bold text-slate-400 hover:text-white">2x</button>
+                            <button onclick="setReelCount(3)" id="reelCountBtn-3" class="px-2.5 py-1 rounded-lg text-xs font-mono-tech font-bold text-slate-400 hover:text-white">3x</button>
+                        </div>
+
+                        <button onclick="toggleFastSpin()" id="fastSpinBtn" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold border border-slate-700 bg-slate-900/90 text-slate-300 hover:text-white transition flex items-center gap-1.5">
+                            <span>⚡ FAST:</span>
+                            <span id="fastSpinState" class="text-slate-400">OFF</span>
+                        </button>
+
+                        <button onclick="toggleAutoSpin()" id="autoSpinBtn" class="px-3 py-1.5 rounded-xl text-xs font-display font-bold border border-slate-700 bg-slate-900/90 text-slate-300 hover:text-white transition flex items-center gap-1.5">
+                            <span>🔁 AUTO:</span>
+                            <span id="autoSpinState" class="text-slate-400">OFF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- REEL VIEWPORTS CONTAINER -->
+                <div id="reelsMasterWrapper" class="space-y-3">
+                    <div id="reelViewport-0" class="spinner-viewport rounded-xl h-[230px] w-full">
+                        <div class="center-laser"></div>
+                        <div id="reelStrip-0" class="reel-strip"></div>
+                    </div>
+                    <div id="reelViewport-1" class="spinner-viewport rounded-xl h-[230px] w-full hidden">
+                        <div class="center-laser"></div>
+                        <div id="reelStrip-1" class="reel-strip"></div>
+                    </div>
+                    <div id="reelViewport-2" class="spinner-viewport rounded-xl h-[230px] w-full hidden">
+                        <div class="center-laser"></div>
+                        <div id="reelStrip-2" class="reel-strip"></div>
+                    </div>
+                </div>
+
+                <!-- MAIN OPEN ACTION BAR -->
+                <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-800/80">
+                    <div class="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-950 border border-slate-800 text-slate-300">
+                            📸 Code N18 • 15cm Left-Arm Selfie POV
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-950 border border-slate-800 text-emerald-400">
+                            💾 Auto-Saves to Browser & .JSON
+                        </span>
+                    </div>
+
+                    <button id="openCaseMainBtn" onclick="startCaseSpin()" class="w-full sm:w-auto min-w-[270px] py-3.5 px-8 rounded-xl font-display font-black text-lg tracking-wider uppercase transition-all transform active:scale-95 bg-gradient-to-r from-red-500 via-amber-400 to-yellow-500 hover:from-red-400 hover:to-yellow-400 text-slate-950 shadow-[0_0_30px_rgba(239,68,68,0.4)] flex items-center justify-center gap-3">
+                        <span>🎁 OPEN CASE</span>
+                        <span id="openBtnPriceTag" class="px-2.5 py-0.5 rounded-lg bg-slate-950/85 text-amber-300 font-mono-tech text-sm">$300.00</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CASE SKINS GRID -->
+            <div class="space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <h3 class="font-display font-bold text-lg text-white flex items-center gap-2">
+                        <span>🧸 NALLE LO SKINS IN ROTATION</span>
+                        <span class="text-xs font-normal text-slate-400">(Click any skin card to inspect artwork & floats)</span>
+                    </h3>
+                </div>
+                <div id="caseContentsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"></div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 2: SKIN UPGRADER MINIGAME              -->
+        <!-- ========================================== -->
+        <section id="tab-upgrader" class="hidden space-y-6">
+            <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-6">
+                    <div>
+                        <h2 class="font-display font-black text-2xl text-white tracking-wide">
+                            ⚡ NALLE LO SKIN UPGRADER
+                        </h2>
+                        <p class="text-sm text-slate-400">Wager an unlocked Nalle Lo skin on the precision neon wheel. Locked skins are shielded.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="setUpgradeMultiplier(1.5)" id="upgMult-1.5" class="px-3 py-1.5 rounded-lg font-mono-tech text-xs font-bold bg-slate-800 text-slate-300 hover:text-white border border-slate-700">1.5x (62%)</button>
+                        <button onclick="setUpgradeMultiplier(2)" id="upgMult-2" class="px-3 py-1.5 rounded-lg font-mono-tech text-xs font-bold bg-amber-500 text-slate-950">2x (47.5%)</button>
+                        <button onclick="setUpgradeMultiplier(5)" id="upgMult-5" class="px-3 py-1.5 rounded-lg font-mono-tech text-xs font-bold bg-slate-800 text-slate-300 hover:text-white border border-slate-700">5x (19%)</button>
+                        <button onclick="setUpgradeMultiplier(10)" id="upgMult-10" class="px-3 py-1.5 rounded-lg font-mono-tech text-xs font-bold bg-slate-800 text-slate-300 hover:text-white border border-slate-700">10x (9.5%)</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-4 bg-slate-950/80 border border-slate-800 rounded-2xl p-5 flex flex-col items-center justify-center min-h-[300px]" id="upgraderSourceSlot"></div>
+
+                    <div class="lg:col-span-4 flex flex-col items-center justify-center">
+                        <div class="relative w-64 h-64 flex items-center justify-center">
+                            <div class="absolute -top-3 left-1/2 -translate-x-1/2 z-20 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[16px] border-t-yellow-400 drop-shadow-[0_0_8px_#ffd700]"></div>
+                            <svg class="w-full h-full -rotate-90" viewBox="0 0 220 220">
+                                <circle cx="110" cy="110" r="92" fill="none" stroke="#161d2f" stroke-width="16"></circle>
+                                <circle id="upgraderArcCircle" cx="110" cy="110" r="92" fill="none" stroke="url(#upgGrad)" stroke-width="16" stroke-dasharray="270 578" stroke-linecap="round"></circle>
+                                <defs>
+                                    <linearGradient id="upgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#ff3344" />
+                                        <stop offset="50%" stop-color="#ffd700" />
+                                        <stop offset="100%" stop-color="#10b981" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+
+                            <div id="upgraderWheelRotor" class="absolute inset-0 rounded-full transition-transform duration-[3800ms] ease-[cubic-bezier(0.12,0.85,0.18,1)]">
+                                <div class="w-3.5 h-3.5 rounded-full bg-white shadow-[0_0_14px_#fff] mx-auto mt-2"></div>
+                            </div>
+
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                                <span class="text-[11px] uppercase tracking-widest text-slate-400 font-semibold">Win Chance</span>
+                                <span id="upgraderChanceText" class="font-display font-black text-3xl text-amber-400">47.50%</span>
+                                <span id="upgraderStatusText" class="text-xs font-mono-tech text-slate-400 mt-1">READY</span>
+                            </div>
+                        </div>
+
+                        <button id="spinUpgraderBtn" onclick="runUpgraderSpin()" class="mt-5 w-full max-w-xs py-3 px-6 rounded-xl font-display font-black text-base uppercase tracking-wider bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 text-slate-950 shadow-lg shadow-emerald-500/20 transition active:scale-95">
+                            ⚡ SPIN UPGRADER
+                        </button>
+                    </div>
+
+                    <div class="lg:col-span-4 bg-slate-950/80 border border-slate-800 rounded-2xl p-5 flex flex-col items-center justify-center min-h-[300px]" id="upgraderTargetSlot"></div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-slate-800">
+                    <h4 class="font-display font-bold text-sm uppercase tracking-wider text-slate-300 mb-3">Available Unlocked Skins:</h4>
+                    <div id="upgraderInventoryList" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB: NALLE MERGER (FUSION REACTOR)         -->
+        <!-- ========================================== -->
+        <section id="tab-merger" class="hidden space-y-6">
+            <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-6">
+                    <div>
+                        <h2 class="font-display font-black text-2xl text-white tracking-wide">🧬 NALLE MERGER</h2>
+                        <p class="text-sm text-slate-400">Fuse two identical Nalles into one with their <b class="text-slate-200">combined value</b> (2 × $50,000 → 1 × $100,000). 100% success, zero risk. Protected skins can be merged too and the result stays protected.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 text-xs font-mono-tech">
+                        <span class="px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-slate-300">Fusions: <b id="mergerStatFusions" class="text-fuchsia-300">0</b></span>
+                        <span class="px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-slate-300">Best: <b id="mergerStatBest" class="text-fuchsia-300">×1</b></span>
+                        <button onclick="mergerAutoPick()" class="px-3 py-1.5 rounded-lg font-display font-bold bg-fuchsia-500/20 hover:bg-fuchsia-500/30 text-fuchsia-200 border border-fuchsia-500/40 transition">✨ AUTO-PICK BEST PAIR</button>
+                    </div>
+                </div>
+
+                <div id="mergerStage" class="relative overflow-hidden rounded-2xl border border-slate-800 p-4 sm:p-6" style="--mrg:#ffd700; background: radial-gradient(circle at 50% 45%, rgba(168,85,247,.14), transparent 60%), #070b14;">
+                    <canvas id="mergerFx" class="absolute inset-0 w-full h-full pointer-events-none z-20"></canvas>
+                    <div id="mergerFlash" class="absolute inset-0 bg-white opacity-0 pointer-events-none z-30"></div>
+                    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-6 items-center">
+                        <div><div class="text-[10px] uppercase font-mono-tech text-amber-400 mb-1 text-center">Skin A</div><div id="mergerSlotA" class="max-w-[230px] mx-auto"></div></div>
+                        <div class="flex flex-col items-center">
+                            <div id="mergerCore" class="relative w-72 h-72 will-change-transform">
+                                <div id="mergerRays" class="mrg-rays"></div>
+                                <svg viewBox="0 0 280 280" class="absolute inset-0 w-full h-full">
+                                    <defs><radialGradient id="mrgGlow"><stop offset="0" style="stop-color:var(--mrg);stop-opacity:.35"/><stop offset="1" style="stop-color:var(--mrg);stop-opacity:0"/></radialGradient></defs>
+                                    <circle cx="140" cy="140" r="138" fill="url(#mrgGlow)"/>
+                                    <g id="mrgR1"><circle cx="140" cy="140" r="132" fill="none" stroke-width="2" stroke-dasharray="4 10" style="stroke:var(--mrg)" opacity=".7"/></g>
+                                    <g id="mrgR2"><circle cx="140" cy="140" r="116" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="3" stroke-dasharray="50 16 6 16"/><circle cx="140" cy="24" r="5" style="fill:var(--mrg)"/><circle cx="140" cy="256" r="5" style="fill:var(--mrg)"/></g>
+                                    <g id="mrgR3"><polygon points="140,50 218,95 218,185 140,230 62,185 62,95" fill="none" stroke-width="1.5" style="stroke:var(--mrg)" opacity=".55"/></g>
+                                    <circle id="mrgProg" cx="140" cy="140" r="126" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 999" transform="rotate(-90 140 140)"/>
+                                </svg>
+                                <div id="mergerCoreContent" class="absolute inset-0 flex items-center justify-center"></div>
+                            </div>
+                            <div id="mergerHint" class="mt-2 font-mono-tech text-xs text-slate-300 text-center min-h-[1rem]"></div>
+                            <button id="mergerHoldBtn" class="merge-hold mt-3 w-full max-w-xs py-3 px-6 rounded-xl font-display font-black text-base uppercase tracking-wider text-white shadow-lg transition-transform active:scale-95"><span id="mergerHoldLabel">SELECT TWO IDENTICAL NALLES</span></button>
+                            <p class="text-[10px] text-slate-500 mt-1">Hold the button (~1 s) to charge the reactor. Release early to cancel.</p>
+                        </div>
+                        <div><div class="text-[10px] uppercase font-mono-tech text-emerald-400 mb-1 text-center">Skin B</div><div id="mergerSlotB" class="max-w-[230px] mx-auto"></div></div>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-slate-800">
+                    <h4 class="font-display font-bold text-sm uppercase tracking-wider text-slate-300 mb-3">Your Nalles (twins first, click to pick A then B):</h4>
+                    <div id="mergerInventoryList" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 3: PLAYER INVENTORY & VAULT            -->
+        <!-- ========================================== -->
+        <section id="tab-inventory" class="hidden space-y-6">
+            <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-6">
+                    <div>
+                        <h2 class="font-display font-black text-2xl text-white">🎒 YOUR PERSISTENT INVENTORY</h2>
+                        <p class="text-sm text-slate-400">All skins are auto-saved to your browser. Locked items (`🔒`) are immune to selling and upgrading.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <button onclick="downloadSaveFile()" class="px-3.5 py-2 rounded-xl text-xs font-display font-bold bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 transition">
+                            💾 Download .json Save
+                        </button>
+                        <button onclick="sellAllByRarity('common')" class="px-3.5 py-2 rounded-xl text-xs font-display font-bold bg-blue-500/15 hover:bg-blue-500/25 text-blue-300 border border-blue-500/30 transition">
+                            Sell Unlocked Commons
+                        </button>
+                        <button onclick="sellAllUnlocked()" class="px-3.5 py-2 rounded-xl text-xs font-display font-bold bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 transition">
+                            Sell All Unlocked
+                        </button>
+                    </div>
+                </div>
+
+                <div id="fullInventoryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 4: SKIN GALLERY & GRAIL CODEX          -->
+        <!-- ========================================== -->
+        <section id="tab-gallery" class="hidden space-y-6">
+            <!-- Dual Showcase: Absolute Santa & Ascended Deity -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Absolute Santa Card -->
+                <div class="rarity-card-santa rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500 text-white font-display font-black text-xs uppercase tracking-widest shadow-lg mb-3">
+                            ★ 0.01% ULTRA GRAIL • ABSOLUTE SANTA ($150,000.00) ★
+                        </div>
+                        <h2 class="font-display font-black text-2xl text-white drop-shadow">
+                            ABSOLUTE SANTA NALLE LO
+                        </h2>
+                        <p class="text-xs text-red-100/90 mt-2 leading-relaxed">
+                            The pinnacle of the Christmas Winter Event. Draped in supreme velvet with fluffy white trim, a custom Santa hat alongside his 15cm tag, and a full snow blizzard + aurora animation upon unboxing.
+                        </p>
+                    </div>
+                    <div class="w-48 h-48 mx-auto my-3" id="santaShowcaseSvgHolder"></div>
+                    <button onclick="inspectSkinById('absolute_santa')" class="w-full py-2 rounded-xl bg-black/60 hover:bg-black/80 text-white font-display font-bold text-xs uppercase border border-red-400/40">
+                        🔍 Inspect Full Santa Artwork
+                    </button>
+                </div>
+
+                <!-- Ascended Deity Card -->
+                <div class="rarity-card-mystical rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-400 text-slate-950 font-display font-black text-xs uppercase tracking-widest shadow-lg mb-3">
+                            ★ 0.1% DROP CHANCE • MYSTICAL TIER ($25,000.00) ★
+                        </div>
+                        <h2 class="font-display font-black text-2xl text-white drop-shadow">
+                            ASCENDED DEITY NALLE LO
+                        </h2>
+                        <p class="text-xs text-amber-100/90 mt-2 leading-relaxed">
+                            The eternal golden god of NALLE.GG. Features rotating sacred geometry, sunburst rays, and glowing deity eyes, preserving the iconic 15cm selfie POV.
+                        </p>
+                    </div>
+                    <div class="w-48 h-48 mx-auto my-3" id="mysticalShowcaseSvgHolder"></div>
+                    <button onclick="inspectSkinById('ascended_deity')" class="w-full py-2 rounded-xl bg-black/60 hover:bg-black/80 text-yellow-200 font-display font-bold text-xs uppercase border border-yellow-400/60">
+                        🔍 Inspect Full Deity Artwork
+                    </button>
+                </div>
+            </div>
+
+            <!-- Complete Codex Grid -->
+            <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                    <h3 class="font-display font-black text-xl text-white">✨ COMPLETE CODE N18 CODEX</h3>
+                    <span class="text-xs font-mono-tech text-slate-400">Click any skin to inspect</span>
+                </div>
+                <div id="codexAllSkinsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===================================================== -->
+    <!-- UNBOX REVEAL & INSPECT MODAL                          -->
+    <!-- ===================================================== -->
+    <div id="unboxModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-md p-4">
+        <div id="unboxModalCard" class="relative w-full max-w-2xl rounded-2xl bg-[#0e1320] border border-slate-700 p-6 shadow-2xl overflow-hidden">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-5">
+                <div class="flex items-center gap-2.5">
+                    <span id="modalRarityBadge" class="px-3 py-1 rounded-lg font-display font-black text-xs uppercase tracking-wider">
+                        UNBOXED
+                    </span>
+                    <span id="modalStatTrakBadge" class="hidden px-2.5 py-1 rounded-lg font-mono-tech font-bold text-xs bg-orange-500/20 text-orange-300 border border-orange-500/40">
+                        StatTrak™ Selfies: 0
+                    </span>
+                </div>
+                <button onclick="closeUnboxModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center font-bold">
+                    ✕
+                </button>
+            </div>
+
+            <div id="modalItemsContainer" class="grid grid-cols-1 gap-4 place-items-center"></div>
+
+            <div class="mt-6 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                <div class="text-xs text-slate-400 font-mono-tech" id="modalTotalWonText">
+                    Total Pull Value: <span class="text-emerald-400 font-bold">$0.00</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="modalSellBtn" onclick="sellCurrentModalItems()" class="px-5 py-2.5 rounded-xl font-display font-bold text-sm bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 transition">
+                        💰 SELL UNLOCKED
+                    </button>
+                    <button onclick="closeUnboxModal()" class="px-6 py-2.5 rounded-xl font-display font-black text-sm bg-gradient-to-r from-red-500 to-amber-500 text-slate-950 shadow-lg shadow-amber-500/20 transition">
+                        🎒 KEEP IN INVENTORY
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESET MODAL -->
+    <div id="resetConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-md p-4">
+        <div class="w-full max-w-md rounded-2xl bg-[#0e1320] border border-rose-500/50 p-6 shadow-2xl space-y-4">
+            <h3 class="font-display font-black text-lg text-white">🔄 RESET SAVE DATA?</h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                This will reset your balance to <b>$250.00</b> and clear your current browser inventory. Download a `.json` save file first if you want to keep your current progress safe.
+            </p>
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <button onclick="closeResetModal()" class="px-4 py-2 rounded-xl text-xs font-display font-bold bg-slate-800 text-slate-300">Cancel</button>
+                <button onclick="confirmResetSaveData()" class="px-4 py-2 rounded-xl text-xs font-display font-black bg-rose-500 hover:bg-rose-600 text-white shadow-lg">Reset Everything</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        function getEl(id) { return document.getElementById(id); }
+        function setHtml(id, html) { const el = getEl(id); if (el) el.innerHTML = html; }
+        function setText(id, text) { const el = getEl(id); if (el) el.textContent = text; }
+
+        function showToast(message, type = 'success') {
+            const container = getEl('toastContainer');
+            if (!container) return;
+            const colors = {
+                success: 'bg-slate-900/95 border-emerald-500/60 text-emerald-300',
+                gold: 'bg-[#1c1505]/95 border-yellow-400 text-yellow-300 shadow-[0_0_25px_rgba(255,215,0,0.35)]',
+                santa: 'bg-[#1f060a]/95 border-red-500 text-red-200 shadow-[0_0_30px_rgba(239,68,68,0.45)]',
+                snowman: 'bg-[#082f49]/95 border-sky-400 text-sky-200 shadow-[0_0_30px_rgba(56,189,248,0.45)]',
+                error: 'bg-slate-900/95 border-rose-500/60 text-rose-300'
+            };
+            const toast = document.createElement('div');
+            toast.className = `pointer-events-auto px-4 py-3 rounded-xl border text-xs font-mono-tech font-bold shadow-xl transition-all duration-300 ${colors[type] || colors.success}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(8px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3400);
+        }
+
+        /**************************************************************
+         * 1. RARITIES & EXPANDED SKIN DATABASE (NO KEYS, ONLY BEARS)
+         **************************************************************/
+        const RARITIES = {
+            common: { id: 'common', name: 'Common', color: '#4b69ff', cardClass: 'rarity-card-common', badgeBg: 'bg-[#4b69ff]/20 text-[#8ca0ff] border border-[#4b69ff]/50' },
+            rare: { id: 'rare', name: 'Rare', color: '#8847ff', cardClass: 'rarity-card-rare', badgeBg: 'bg-[#8847ff]/20 text-[#b891ff] border border-[#8847ff]/50' },
+            epic: { id: 'epic', name: 'Epic', color: '#d32ce6', cardClass: 'rarity-card-epic', badgeBg: 'bg-[#d32ce6]/20 text-[#f088fc] border border-[#d32ce6]/50' },
+            legendary: { id: 'legendary', name: 'LEGENDARY', color: '#eb4b4b', cardClass: 'rarity-card-legendary', badgeBg: 'bg-[#eb4b4b]/25 text-[#ff8585] border border-[#eb4b4b]/60' },
+            mystical: { id: 'mystical', name: 'MYSTICAL', color: '#ffd700', cardClass: 'rarity-card-mystical', badgeBg: 'bg-yellow-400 text-slate-950 font-black border border-yellow-200 shadow-[0_0_15px_#ffd700]' },
+            santa: { id: 'santa', name: 'ABSOLUTE SANTA', color: '#ff3344', cardClass: 'rarity-card-santa', badgeBg: 'bg-red-600 text-white font-black border border-yellow-300 shadow-[0_0_20px_#ff3344]' },
+            snowman: { id: 'snowman', name: 'SNOWMAN TEDDY', color: '#38bdf8', cardClass: 'rarity-card-snowman', badgeBg: 'bg-sky-400 text-slate-950 font-black border border-sky-200 shadow-[0_0_20px_#38bdf8]' }
+        };
+
+        const NALLE_SKINS = [
+            // COMMON
+            { id: 'streetwear_nalle', name: 'Streetwear Nalle', subtitle: 'Classic 15cm Caramel Stitch POV', rarity: 'common', basePrice: 2.20, theme: 'streetwear' },
+            { id: 'hoodie_nalle', name: 'Hoodie Nalle', subtitle: 'Charcoal Fleece Zip-Up Selfie', rarity: 'common', basePrice: 3.80, theme: 'hoodie' },
+            { id: 'midnight_jogger', name: 'Midnight Jogger Nalle', subtitle: '3km Night Run Windbreaker', rarity: 'common', basePrice: 5.50, theme: 'jogger' },
+            { id: 'coffee_run', name: 'Coffee Run Nalle', subtitle: 'Early Commute Espresso Plush', rarity: 'common', basePrice: 7.50, theme: 'coffee' },
+            // CHRISTMAS COMMON:
+            { id: 'candy_cane_scarf', name: 'Candy Cane Scarf Nalle', subtitle: 'Cozy Knit Frosty Winter Selfie', rarity: 'common', basePrice: 15.00, theme: 'candy_cane' },
+
+            // RARE
+            { id: 'cyber_punk', name: 'Cyber Punk Nalle', subtitle: 'Neon Optical Visor & Chrome Stitch', rarity: 'rare', basePrice: 18.00, theme: 'cyber' },
+            { id: 'phonk_producer', name: 'Phonk Producer Nalle', subtitle: '808 Cowbell Distortion Aura', rarity: 'rare', basePrice: 29.50, theme: 'phonk' },
+            { id: 'tactical_ops', name: 'Tactical Ops Nalle', subtitle: 'Stealth Spec-Ops Night Plush', rarity: 'rare', basePrice: 42.00, theme: 'tactical' },
+
+            // EPIC
+            { id: 'neon_velocity', name: 'Neon Velocity Nalle', subtitle: '165Hz Twixtor Motion-Blur Trail', rarity: 'epic', basePrice: 95.00, theme: 'velocity' },
+            { id: 'bloodmoon_assassin', name: 'Bloodmoon Assassin Nalle', subtitle: 'Crimson Shadow Seam Plush', rarity: 'epic', basePrice: 155.00, theme: 'bloodmoon' },
+            { id: 'void_walker', name: 'Void Walker Nalle', subtitle: 'Dark Singularity Horizon Plush', rarity: 'epic', basePrice: 230.00, theme: 'voidwalker' },
+
+            // LEGENDARY
+            { id: 'crimson_emperor', name: 'Crimson Emperor Nalle', subtitle: 'Imperial Ruby & Obsidian Fur', rarity: 'legendary', basePrice: 580.00, theme: 'emperor' },
+            { id: 'dragonforge_nalle', name: 'Dragonforge Nalle', subtitle: 'Molten Magma Core Stitching', rarity: 'legendary', basePrice: 1100.00, theme: 'dragonforge' },
+            { id: 'astral_sovereign', name: 'Astral Sovereign Nalle', subtitle: 'Royal Crowned Celestial Plush', rarity: 'legendary', basePrice: 1750.00, theme: 'sovereign' },
+            // CHRISTMAS LEGENDARY:
+            { id: 'north_pole_sovereign', name: 'North Pole Sovereign Nalle', subtitle: 'Golden Antlers & Jingle Bells', rarity: 'legendary', basePrice: 1250.00, theme: 'north_pole' },
+
+            // 0.1% MYSTICAL
+            { id: 'ascended_deity', name: 'ASCENDED DEITY NALLE LO', subtitle: '★ GLOWING YELLOW GODLIKE 15cm TEDDY ★', rarity: 'mystical', basePrice: 25000.00, theme: 'mystical' },
+
+            // 0.01% CHRISTMAS ULTRA GRAIL:
+            { id: 'absolute_santa', name: 'ABSOLUTE SANTA NALLE LO', subtitle: '★ THE SUPREME CHRISTMAS 15cm TEDDY ★', rarity: 'santa', basePrice: 150000.00, theme: 'santa' },
+
+            // 5% IN SNOWMAN CASE ONLY ($500,000.00 VALUE):
+            { id: 'snowman_teddy', name: 'SNOWMAN TEDDY', subtitle: '★ 5% FROST SNOWMAN 15cm TEDDY ★', rarity: 'snowman', basePrice: 500000.00, theme: 'snowman' }
+        ];
+
+        const CASES = [
+            {
+                id: 'winter_case',
+                name: 'Winter Wonderland Case',
+                badge: '❄️ EVENT CASE',
+                price: 300.00,
+                desc: 'Features Candy Cane Scarf, North Pole Sovereign, 0.1% Ascended Deity, and the 0.01% ABSOLUTE SANTA!',
+                weights: { common: 60.0, rare: 25.0, epic: 11.0, legendary: 3.89, mystical: 0.1, santa: 0.01, snowman: 0.0 }
+            },
+            {
+                id: 'snowman_case',
+                name: 'Snowman Case',
+                badge: '⛄ $100K CASE',
+                price: 100000.00,
+                desc: 'Exclusive $100,000 high-roller case! Exact 5% chance to hit the $500,000 SNOWMAN TEDDY!',
+                weights: { common: 0.0, rare: 0.0, epic: 0.0, legendary: 70.0, mystical: 20.0, santa: 5.0, snowman: 5.0 }
+            },
+            {
+                id: 'starter_case',
+                name: 'Streetwear Starter Case',
+                badge: 'STANDARD',
+                price: 5.00,
+                desc: 'Classic Code N18 case with balanced odds and a 0.1% Ascended Deity drop rate.',
+                weights: { common: 65.0, rare: 22.0, epic: 9.9, legendary: 3.0, mystical: 0.1, santa: 0.00, snowman: 0.0 }
+            },
+            {
+                id: 'phonk_case',
+                name: 'Phonk & Velocity Case',
+                badge: 'BOOSTED',
+                price: 50.00,
+                desc: 'High-frequency drops with enhanced Rare/Epic rates and a 0.3% Mystical pull rate.',
+                weights: { common: 40.0, rare: 38.0, epic: 16.7, legendary: 5.0, mystical: 0.3, santa: 0.00, snowman: 0.0 }
+            },
+            {
+                id: 'high_roller_case',
+                name: 'Deity High-Roller Case',
+                badge: 'NO COMMONS',
+                price: 500.00,
+                desc: 'Zero Commons! Guaranteed Rare or higher with 2.5% Deity and 0.05% Absolute Santa chance.',
+                weights: { common: 0.0, rare: 35.0, epic: 37.45, legendary: 25.0, mystical: 2.5, santa: 0.05, snowman: 0.0 }
+            }
+        ];
+
+        /**************************************************************
+         * 2. AUTHENTIC 15cm NALLE LO SELFIE-POV SVG ENGINE
+         **************************************************************/
+        function renderNalleLoSVG(skin, uidSuffix = '0') {
+            const uid = `${skin.id}_${uidSuffix}`;
+            const t = skin.theme;
+
+            let cfg = {
+                bgGrad1: '#1a243b',
+                bgGrad2: '#0b0f1a',
+                furMain: '#c68642',
+                furShade: '#99622a',
+                furHighlight: '#e0a463',
+                muzzle: '#f3d1a4',
+                innerEar: '#e6be8a',
+                noseColor: '#3a2312',
+                eyeColor: '#111111',
+                seamColor: '#6e4219',
+                auraColor: 'transparent',
+                isMystical: false,
+                isSanta: false,
+                isSnowman: false
+            };
+
+            switch (t) {
+                case 'snowman':
+                    cfg = {
+                        bgGrad1: '#0284c7',
+                        bgGrad2: '#082f49',
+                        furMain: '#f0f9ff',
+                        furShade: '#bae6fd',
+                        furHighlight: '#ffffff',
+                        muzzle: '#e0f2fe',
+                        innerEar: '#38bdf8',
+                        noseColor: '#ea580c',
+                        eyeColor: '#0f172a',
+                        seamColor: '#38bdf8',
+                        auraColor: 'rgba(56,189,248,0.75)',
+                        isSnowman: true
+                    };
+                    break;
+                case 'candy_cane':
+                    cfg = { ...cfg, bgGrad1: '#0284c7', bgGrad2: '#082f49', furMain: '#b45309', furShade: '#78350f', furHighlight: '#d97706', muzzle: '#fef08a' };
+                    break;
+                case 'north_pole':
+                    cfg = { ...cfg, bgGrad1: '#14532d', bgGrad2: '#022c22', furMain: '#78350f', furShade: '#451a03', furHighlight: '#fbbf24', innerEar: '#ef4444', seamColor: '#f59e0b', auraColor: 'rgba(245,158,11,0.45)' };
+                    break;
+                case 'santa':
+                    cfg = {
+                        bgGrad1: '#991b1b',
+                        bgGrad2: '#450a0a',
+                        furMain: '#c68642',
+                        furShade: '#99622a',
+                        furHighlight: '#e0a463',
+                        muzzle: '#fff',
+                        innerEar: '#fecaca',
+                        noseColor: '#dc2626',
+                        eyeColor: '#ffffff',
+                        seamColor: '#fbbf24',
+                        auraColor: 'rgba(255,215,0,0.85)',
+                        isSanta: true
+                    };
+                    break;
+                case 'mystical':
+                    cfg = {
+                        bgGrad1: '#fff380',
+                        bgGrad2: '#996500',
+                        furMain: '#ffd700',
+                        furShade: '#e69b00',
+                        furHighlight: '#ffffff',
+                        muzzle: '#fffde0',
+                        innerEar: '#fff59d',
+                        noseColor: '#b45309',
+                        eyeColor: '#ffffff',
+                        seamColor: '#ffffff',
+                        auraColor: 'rgba(255, 238, 88, 0.95)',
+                        isMystical: true
+                    };
+                    break;
+                case 'hoodie':
+                    cfg = { ...cfg, bgGrad1: '#232936', bgGrad2: '#0e1117', furMain: '#b87a3d', furShade: '#875421', muzzle: '#e8c396' };
+                    break;
+                case 'jogger':
+                    cfg = { ...cfg, bgGrad1: '#0c1938', bgGrad2: '#040814', furMain: '#52688f', furShade: '#324363', furHighlight: '#7994c4', muzzle: '#9bb1d6', innerEar: '#7c92b8', eyeColor: '#38bdf8', seamColor: '#23314d' };
+                    break;
+                case 'coffee':
+                    cfg = { ...cfg, bgGrad1: '#3b2d1f', bgGrad2: '#140e09', furMain: '#a47148', furShade: '#6f4518', furHighlight: '#d4a373', muzzle: '#faedcd', seamColor: '#583101' };
+                    break;
+                case 'cyber':
+                    cfg = { ...cfg, bgGrad1: '#3b0764', bgGrad2: '#090d16', furMain: '#334155', furShade: '#1e293b', furHighlight: '#38bdf8', muzzle: '#64748b', innerEar: '#f43f5e', noseColor: '#facc15', eyeColor: '#38bdf8', seamColor: '#38bdf8' };
+                    break;
+                case 'phonk':
+                    cfg = { ...cfg, bgGrad1: '#3c096c', bgGrad2: '#10002b', furMain: '#7b2cbf', furShade: '#4a1578', furHighlight: '#c77dff', muzzle: '#e0aaff', innerEar: '#9d4edd', eyeColor: '#ff007f', seamColor: '#ff007f', auraColor: 'rgba(199,125,255,0.35)' };
+                    break;
+                case 'tactical':
+                    cfg = { ...cfg, bgGrad1: '#062c21', bgGrad2: '#040d0a', furMain: '#374151', furShade: '#1f2937', furHighlight: '#6b7280', muzzle: '#4b5563', innerEar: '#10b981', noseColor: '#10b981', eyeColor: '#34d399', seamColor: '#10b981' };
+                    break;
+                case 'velocity':
+                    cfg = { ...cfg, bgGrad1: '#500724', bgGrad2: '#190426', furMain: '#c026d3', furShade: '#701a75', furHighlight: '#22d3ee', muzzle: '#f5d0fe', innerEar: '#38bdf8', noseColor: '#06b6d4', eyeColor: '#ffffff', seamColor: '#22d3ee', auraColor: 'rgba(217,70,239,0.45)' };
+                    break;
+                case 'bloodmoon':
+                    cfg = { ...cfg, bgGrad1: '#450a0a', bgGrad2: '#140303', furMain: '#262626', furShade: '#111111', furHighlight: '#525252', muzzle: '#3f3f46', innerEar: '#dc2626', noseColor: '#ef4444', eyeColor: '#ef4444', seamColor: '#ef4444', auraColor: 'rgba(239,68,68,0.4)' };
+                    break;
+                case 'voidwalker':
+                    cfg = { ...cfg, bgGrad1: '#2e1065', bgGrad2: '#030014', furMain: '#181028', furShade: '#090514', furHighlight: '#a855f7', muzzle: '#2e1d4a', innerEar: '#7e22ce', noseColor: '#c084fc', eyeColor: '#e879f9', seamColor: '#a855f7', auraColor: 'rgba(168,85,247,0.5)' };
+                    break;
+                case 'emperor':
+                    cfg = { ...cfg, bgGrad1: '#650616', bgGrad2: '#120206', furMain: '#991b1b', furShade: '#450a0a', furHighlight: '#f87171', muzzle: '#fecaca', innerEar: '#fbbf24', noseColor: '#450a0a', eyeColor: '#fde047', seamColor: '#fbbf24', auraColor: 'rgba(244,63,94,0.5)' };
+                    break;
+                case 'dragonforge':
+                    cfg = { ...cfg, bgGrad1: '#7f1d1d', bgGrad2: '#1c0905', furMain: '#1c1917', furShade: '#0c0a09', furHighlight: '#f97316', muzzle: '#44403c', innerEar: '#fb923c', noseColor: '#fde047', eyeColor: '#fef08a', seamColor: '#f97316', auraColor: 'rgba(251,146,60,0.55)' };
+                    break;
+                case 'sovereign':
+                    cfg = { ...cfg, bgGrad1: '#713f12', bgGrad2: '#1f1206', furMain: '#eab308', furShade: '#a16207', furHighlight: '#fef08a', muzzle: '#fef9c3', innerEar: '#dc2626', noseColor: '#7f1d1d', eyeColor: '#ffffff', seamColor: '#fef08a', auraColor: 'rgba(250,204,21,0.5)' };
+                    break;
+            }
+
+            return `
+            <svg viewBox="0 0 200 200" class="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <radialGradient id="bg_${uid}" cx="50%" cy="45%" r="65%">
+                        <stop offset="0%" stop-color="${cfg.bgGrad1}" />
+                        <stop offset="100%" stop-color="${cfg.bgGrad2}" />
+                    </radialGradient>
+
+                    <radialGradient id="fur_${uid}" cx="45%" cy="38%" r="60%">
+                        <stop offset="0%" stop-color="${cfg.furHighlight}" />
+                        <stop offset="45%" stop-color="${cfg.furMain}" />
+                        <stop offset="100%" stop-color="${cfg.furShade}" />
+                    </radialGradient>
+
+                    <radialGradient id="godGlow_${uid}" cx="50%" cy="48%" r="50%">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+                        <stop offset="35%" stop-color="#fff176" stop-opacity="0.9" />
+                        <stop offset="70%" stop-color="#ffd700" stop-opacity="0.55" />
+                        <stop offset="100%" stop-color="#ff9900" stop-opacity="0" />
+                    </radialGradient>
+
+                    <radialGradient id="santaGlow_${uid}" cx="50%" cy="48%" r="55%">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+                        <stop offset="30%" stop-color="#fecaca" stop-opacity="0.9" />
+                        <stop offset="70%" stop-color="#ef4444" stop-opacity="0.6" />
+                        <stop offset="100%" stop-color="#7f1d1d" stop-opacity="0" />
+                    </radialGradient>
+
+                    <radialGradient id="snowmanGlow_${uid}" cx="50%" cy="48%" r="55%">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+                        <stop offset="30%" stop-color="#e0f2fe" stop-opacity="0.9" />
+                        <stop offset="70%" stop-color="#38bdf8" stop-opacity="0.6" />
+                        <stop offset="100%" stop-color="#0369a1" stop-opacity="0" />
+                    </radialGradient>
+
+                    <filter id="neonGlow_${uid}" x="-30%" y="-30%" width="160%" height="160%">
+                        <feGaussianBlur stdDeviation="${cfg.isMystical || cfg.isSanta || cfg.isSnowman ? '5' : '2.5'}" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                <rect width="200" height="200" rx="10" fill="url(#bg_${uid})" />
+                <circle cx="100" cy="100" r="92" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1.5" stroke-dasharray="6 4" />
+
+                ${cfg.isMystical ? `
+                    <circle cx="100" cy="95" r="88" fill="url(#godGlow_${uid})" />
+                    <g class="halo-spin" opacity="0.9">
+                        <polygon points="100,92 88,4 112,4" fill="#fff9c4" opacity="0.65" />
+                        <polygon points="100,92 185,35 195,55" fill="#fff9c4" opacity="0.55" />
+                        <polygon points="100,92 195,130 180,152" fill="#fff9c4" opacity="0.65" />
+                        <polygon points="100,92 15,150 5,125" fill="#fff9c4" opacity="0.55" />
+                        <polygon points="100,92 8,45 25,25" fill="#fff9c4" opacity="0.65" />
+                        <circle cx="100" cy="92" r="74" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="10 6" />
+                        <circle cx="100" cy="92" r="64" fill="none" stroke="#ffd700" stroke-width="2.5" />
+                    </g>
+                ` : ''}
+
+                ${cfg.isSanta ? `
+                    <circle cx="100" cy="95" r="90" fill="url(#santaGlow_${uid})" />
+                    <g class="halo-spin" opacity="0.85">
+                        <circle cx="100" cy="92" r="76" fill="none" stroke="#fef08a" stroke-width="2.5" stroke-dasharray="12 6" />
+                        <circle cx="100" cy="92" r="66" fill="none" stroke="#ffffff" stroke-width="1.5" />
+                        <polygon points="100,8 106,20 118,20 108,28 112,40 100,32 88,40 92,28 82,20 94,20" fill="#ffd700" />
+                    </g>
+                ` : ''}
+
+                ${cfg.isSnowman ? `
+                    <circle cx="100" cy="95" r="90" fill="url(#snowmanGlow_${uid})" />
+                    <g class="halo-spin" opacity="0.85">
+                        <circle cx="100" cy="92" r="76" fill="none" stroke="#e0f2fe" stroke-width="2" stroke-dasharray="10 8" />
+                        <circle cx="100" cy="92" r="66" fill="none" stroke="#38bdf8" stroke-width="1.5" />
+                    </g>
+                ` : ''}
+
+                ${cfg.auraColor !== 'transparent' && !cfg.isMystical && !cfg.isSanta && !cfg.isSnowman ? `
+                    <circle cx="105" cy="96" r="68" fill="${cfg.auraColor}" filter="url(#neonGlow_${uid})" />
+                ` : ''}
+
+                <g>
+                    <!-- Torso -->
+                    <path d="M 48 188 C 46 142, 68 130, 106 130 C 142 130, 162 146, 165 188 Z" 
+                          fill="${cfg.isSanta ? '#dc2626' : `url(#fur_${uid})`}" stroke="${cfg.seamColor}" stroke-width="2" />
+
+                    ${cfg.isSanta ? `
+                        <!-- Santa Coat Trim & Gold Buckle Belt -->
+                        <path d="M 46 168 L 166 168 L 166 182 L 46 182 Z" fill="#0f172a" />
+                        <rect x="94" y="165" width="24" height="20" rx="3" fill="#fbbf24" stroke="#ffffff" stroke-width="1.5" />
+                        <rect x="99" y="170" width="14" height="10" rx="2" fill="#0f172a" />
+                        <path d="M 100 130 L 112 130 L 112 188 L 100 188 Z" fill="#ffffff" />
+                    ` : (cfg.isSnowman ? `
+                        <!-- Snowman Coal Buttons -->
+                        <circle cx="106" cy="148" r="4" fill="#0f172a" />
+                        <circle cx="106" cy="164" r="4" fill="#0f172a" />
+                        <circle cx="106" cy="180" r="4" fill="#0f172a" />
+                        <line x1="106" y1="134" x2="106" y2="188" stroke="${cfg.seamColor}" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6" />
+                    ` : `
+                        <ellipse cx="107" cy="166" rx="28" ry="22" fill="${cfg.muzzle}" opacity="${t === 'hoodie' || t === 'jogger' ? '0' : '0.85'}" />
+                        <line x1="107" y1="134" x2="107" y2="188" stroke="${cfg.seamColor}" stroke-width="1.5" stroke-dasharray="4 3" />
+                    `)}
+
+                    <!-- Right Arm -->
+                    <path d="M 150 142 C 172 150, 178 172, 164 185 C 152 192, 142 175, 146 156 Z" 
+                          fill="${cfg.isSanta ? '#dc2626' : `url(#fur_${uid})`}" stroke="${cfg.seamColor}" stroke-width="2" />
+
+                    <!-- Rounded Teddy Ears -->
+                    <circle cx="62" cy="52" r="22" fill="url(#fur_${uid})" stroke="${cfg.seamColor}" stroke-width="2" />
+                    <circle cx="62" cy="52" r="12" fill="${cfg.innerEar}" />
+                    <circle cx="148" cy="54" r="22" fill="url(#fur_${uid})" stroke="${cfg.seamColor}" stroke-width="2" />
+                    <circle cx="148" cy="54" r="12" fill="${cfg.innerEar}" />
+
+                    <!-- Reindeer Antlers for North Pole Sovereign -->
+                    ${t === 'north_pole' ? `
+                        <path d="M 54 44 C 44 26, 32 20, 26 24 C 34 32, 42 36, 48 42" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" fill="none" />
+                        <path d="M 40 28 C 42 16, 50 12, 54 14" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" fill="none" />
+                        <path d="M 156 44 C 166 26, 178 20, 184 24 C 176 32, 168 36, 162 42" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" fill="none" />
+                        <path d="M 170 28 C 168 16, 160 12, 156 14" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" fill="none" />
+                        <circle cx="86" cy="136" r="5" fill="#ffd700" stroke="#78350f" stroke-width="1.5" />
+                        <circle cx="106" cy="138" r="6" fill="#ffd700" stroke="#78350f" stroke-width="1.5" />
+                        <circle cx="126" cy="136" r="5" fill="#ffd700" stroke="#78350f" stroke-width="1.5" />
+                    ` : ''}
+
+                    <!-- Official 15cm Ear Tag -->
+                    <g transform="rotate(-18 42 46)">
+                        <rect x="25" y="40" width="26" height="11" rx="2" fill="${cfg.isMystical ? '#ffd700' : (cfg.isSanta ? '#ef4444' : (cfg.isSnowman ? '#38bdf8' : '#f8fafc'))}" stroke="#0f172a" stroke-width="1" />
+                        <text x="38" y="48" font-size="6.5" font-weight="900" fill="${cfg.isSanta || cfg.isSnowman ? '#ffffff' : '#0f172a'}" text-anchor="middle" font-family="monospace">15cm</text>
+                    </g>
+
+                    <!-- Plush Head -->
+                    <ellipse cx="105" cy="92" rx="48" ry="44" fill="url(#fur_${uid})" stroke="${cfg.seamColor}" stroke-width="2.2" />
+
+                    <!-- Forehead Seam -->
+                    <line x1="105" y1="48" x2="105" y2="78" stroke="${cfg.seamColor}" stroke-width="1.8" stroke-dasharray="4 3" />
+                    <line x1="101" y1="56" x2="109" y2="56" stroke="${cfg.seamColor}" stroke-width="1.4" />
+                    <line x1="101" y1="66" x2="109" y2="66" stroke="${cfg.seamColor}" stroke-width="1.4" />
+
+                    <!-- Muzzle Patch -->
+                    <ellipse cx="105" cy="105" rx="22" ry="16" fill="${cfg.muzzle}" stroke="${cfg.seamColor}" stroke-width="1.2" />
+
+                    <!-- Nose & Smile -->
+                    <ellipse cx="105" cy="99" rx="9.5" ry="6" fill="${cfg.noseColor}" />
+                    <line x1="99" y1="97" x2="111" y2="97" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round" />
+                    <line x1="105" y1="105" x2="105" y2="112" stroke="${cfg.noseColor}" stroke-width="2.2" stroke-linecap="round" />
+                    <path d="M 93 110 Q 105 119 117 110" fill="none" stroke="${cfg.noseColor}" stroke-width="2.4" stroke-linecap="round" />
+
+                    <!-- Santa Hat & White Fluffy Beard -->
+                    ${cfg.isSanta ? `
+                        <path d="M 68 56 Q 105 32 144 56 Q 165 42 175 60 Q 140 22 105 24 Q 70 26 68 56 Z" fill="#dc2626" stroke="#fbbf24" stroke-width="1.5" />
+                        <path d="M 62 58 Q 105 48 148 58 Q 105 52 62 58 Z" stroke="#ffffff" stroke-width="8" stroke-linecap="round" />
+                        <circle cx="175" cy="62" r="8" fill="#ffd700" filter="url(#neonGlow_${uid})" />
+                        <path d="M 86 112 C 78 132, 92 148, 105 148 C 118 148, 132 132, 124 112 C 116 122, 94 122, 86 112 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+                    ` : ''}
+
+                    <!-- Candy Cane Scarf for Christmas Common -->
+                    ${t === 'candy_cane' ? `
+                        <path d="M 72 124 Q 105 138 138 124 Q 105 144 72 124 Z" stroke="#dc2626" stroke-width="10" stroke-linecap="round" fill="none" />
+                        <path d="M 80 126 L 84 132 M 96 128 L 100 134 M 112 128 L 116 134 M 128 126 L 132 132" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+                        <path d="M 124 130 L 132 165 L 144 165 L 136 128 Z" fill="#dc2626" stroke="#991b1b" stroke-width="1" />
+                        <line x1="126" y1="140" x2="138" y2="140" stroke="#ffffff" stroke-width="3" />
+                        <line x1="128" y1="152" x2="140" y2="152" stroke="#ffffff" stroke-width="3" />
+                    ` : ''}
+
+                    <!-- Eyes -->
+                    <circle cx="84" cy="84" r="${cfg.isMystical || cfg.isSanta || cfg.isSnowman ? '7.5' : '6'}" fill="${cfg.eyeColor}" ${cfg.isMystical || cfg.isSanta || cfg.isSnowman ? `filter="url(#neonGlow_${uid})"` : ''} />
+                    <circle cx="82" cy="82" r="2" fill="#ffffff" />
+                    <circle cx="126" cy="84" r="${cfg.isMystical || cfg.isSanta || cfg.isSnowman ? '7.5' : '6'}" fill="${cfg.eyeColor}" ${cfg.isMystical || cfg.isSanta || cfg.isSnowman ? `filter="url(#neonGlow_${uid})"` : ''} />
+                    <circle cx="124" cy="82" r="2" fill="#ffffff" />
+
+                    ${cfg.isMystical ? `
+                        <path d="M 70 84 L 98 84 M 84 70 L 84 98" stroke="#ffffff" stroke-width="2.5" filter="url(#neonGlow_${uid})" />
+                        <path d="M 112 84 L 140 84 M 126 70 L 126 98" stroke="#ffffff" stroke-width="2.5" filter="url(#neonGlow_${uid})" />
+                        <polygon points="82,42 92,22 105,34 118,22 128,42" fill="#ffd700" stroke="#ffffff" stroke-width="2" filter="url(#neonGlow_${uid})" />
+                    ` : ''}
+
+                    <!-- CODE N18 LEFT ARM EXTENDED HOLDING CAMERA IN SELFIE POV -->
+                    <path d="M 74 138 C 52 142, 26 154, 6 178 L 38 196 C 56 176, 72 162, 84 152 Z" 
+                          fill="${cfg.isSanta ? '#dc2626' : `url(#fur_${uid})`}" stroke="${cfg.seamColor}" stroke-width="2.5" />
+                    ${cfg.isSanta ? `
+                        <path d="M 22 170 L 42 190" stroke="#ffffff" stroke-width="7" stroke-linecap="round" />
+                    ` : ''}
+                    <ellipse cx="22" cy="182" rx="22" ry="17" transform="rotate(-20 22 182)" 
+                             fill="url(#fur_${uid})" stroke="${cfg.seamColor}" stroke-width="2.8" />
+                    <ellipse cx="24" cy="183" rx="11" ry="8.5" transform="rotate(-20 24 183)" fill="${cfg.muzzle}" />
+                    <circle cx="15" cy="172" r="3.5" fill="${cfg.muzzle}" />
+                    <circle cx="24" cy="169" r="3.5" fill="${cfg.muzzle}" />
+                    <circle cx="33" cy="172" r="3.5" fill="${cfg.muzzle}" />
+                    <path d="M 0 162 L 18 162 L 18 200" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="3" />
+                </g>
+
+                ${cfg.isSanta ? `
+                    <circle cx="30" cy="35" r="2.5" fill="#ffffff" filter="url(#neonGlow_${uid})" />
+                    <circle cx="170" cy="40" r="3" fill="#ffd700" filter="url(#neonGlow_${uid})" />
+                    <circle cx="168" cy="120" r="2.5" fill="#ffffff" filter="url(#neonGlow_${uid})" />
+                    <rect x="3" y="3" width="194" height="194" rx="9" fill="none" stroke="#ef4444" stroke-width="3" opacity="0.85" />
+                ` : ''}
+            </svg>`;
+        }
+
+        /**************************************************************
+         * 3. WEB AUDIO SYNTHESIZER (SLEIGH BELLS + FANFARES)
+         **************************************************************/
+        class AudioSynth {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AC = window.AudioContext || window.webkitAudioContext;
+                    if (AC) this.ctx = new AC();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playTick(pitch = 1) {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(800 * pitch, now);
+                osc.frequency.exponentialRampToValueAtTime(180, now + 0.025);
+
+                gain.gain.setValueAtTime(0.14, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.03);
+            }
+
+            playSleighBells() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const bellFreqs = [2489, 2960, 3135, 3729, 4186];
+
+                for (let stroke = 0; stroke < 4; stroke++) {
+                    const strokeTime = now + (stroke * 0.16);
+                    bellFreqs.forEach(f => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(f + (Math.random() * 40 - 20), strokeTime);
+
+                        gain.gain.setValueAtTime(0.04, strokeTime);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, strokeTime + 0.12);
+
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(strokeTime);
+                        osc.stop(strokeTime + 0.13);
+                    });
+                }
+            }
+
+            playDropFanfare(rarity) {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+
+                if (rarity === 'santa' || rarity === 'snowman') {
+                    this.playSleighBells();
+                    const bass = this.ctx.createOscillator();
+                    const bassGain = this.ctx.createGain();
+                    bass.type = 'sawtooth';
+                    bass.frequency.setValueAtTime(120, now + 0.4);
+                    bass.frequency.exponentialRampToValueAtTime(45, now + 1.8);
+                    bassGain.gain.setValueAtTime(0.25, now + 0.4);
+                    bassGain.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
+                    bass.connect(bassGain);
+                    bassGain.connect(this.ctx.destination);
+                    bass.start(now + 0.4);
+                    bass.stop(now + 2.3);
+
+                    const chords = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+                    chords.forEach((note, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(note, now + 0.5 + idx * 0.08);
+                        gain.gain.setValueAtTime(0.09, now + 0.5 + idx * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.5);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now + 0.5 + idx * 0.08);
+                        osc.stop(now + 2.6);
+                    });
+                } else if (rarity === 'mystical') {
+                    const freqs = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
+                    freqs.forEach((f, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = idx % 2 === 0 ? 'sawtooth' : 'triangle';
+                        osc.frequency.setValueAtTime(f, now);
+                        gain.gain.setValueAtTime(0.001, now);
+                        gain.gain.linearRampToValueAtTime(0.08, now + 0.15);
+                        gain.gain.exponentialRampToValueAtTime(0.0008, now + 2.6);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 2.65);
+                    });
+                } else if (rarity === 'legendary') {
+                    [330, 440, 554.37, 659.25, 880].forEach((n, i) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(n, now + i * 0.07);
+                        gain.gain.setValueAtTime(0.14, now + i * 0.07);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.07 + 0.6);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now + i * 0.07);
+                        osc.stop(now + i * 0.07 + 0.65);
+                    });
+                } else {
+                    [329.63, 392, 523.25].forEach((n, i) => {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(n, now + i * 0.06);
+                        gain.gain.setValueAtTime(0.1, now + i * 0.06);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.35);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now + i * 0.06);
+                        osc.stop(now + i * 0.06 + 0.4);
+                    });
+                }
+            }
+        }
+        const sfx = new AudioSynth();
+
+        /**************************************************************
+         * 4. PERSISTENT STORAGE
+         **************************************************************/
+        const STORAGE_KEY = 'NALLE_GG_SAVE_DATA_V2';
+
+        let state = {
+            balance: 250.00,
+            selectedCaseId: 'winter_case',
+            reelCount: 1,
+            fastSpin: false,
+            autoSpin: false,
+            isSpinning: false,
+            casesOpened: 0,
+            grailsPulled: 0,
+            bestPullValue: 0.00,
+            inventory: [],
+            lastUnboxedItems: [],
+            upgraderSelectedUid: null,
+            upgraderMultiplier: 2,
+            upgraderWheelAngle: 0,
+            isUpgrading: false,
+            mergesDone: 0,
+            bestFused: 1
+        };
+
+        function getSavePayload() {
+            return {
+                game: 'NALLE.GG',
+                version: 2,
+                event: 'Christmas Winter Event',
+                savedAt: new Date().toISOString(),
+                balance: Number(state.balance.toFixed(2)),
+                casesOpened: state.casesOpened,
+                grailsPulled: state.grailsPulled,
+                bestPullValue: Number(state.bestPullValue.toFixed(2)),
+                mergesDone: state.mergesDone,
+                bestFused: state.bestFused,
+                inventory: state.inventory
+            };
+        }
+
+        function saveGame() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(getSavePayload()));
+                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                setText('autoSaveText', `SAVED ${time}`);
+                const dot = getEl('savePulseDot');
+                if (dot) {
+                    dot.classList.add('scale-150', 'bg-yellow-300');
+                    setTimeout(() => dot.classList.remove('scale-150', 'bg-yellow-300'), 300);
+                }
+            } catch (e) {}
+        }
+
+        function loadGame() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const data = JSON.parse(raw);
+                    if (typeof data.balance === 'number') state.balance = Math.max(0, Number(data.balance.toFixed(2)));
+                    if (typeof data.casesOpened === 'number') state.casesOpened = data.casesOpened;
+                    if (typeof data.grailsPulled === 'number') state.grailsPulled = data.grailsPulled;
+                    if (typeof data.bestPullValue === 'number') state.bestPullValue = data.bestPullValue;
+                    if (Array.isArray(data.inventory)) state.inventory = data.inventory;
+                    if (typeof data.mergesDone === 'number') state.mergesDone = data.mergesDone;
+                    if (typeof data.bestFused === 'number') state.bestFused = data.bestFused;
+                }
+            } catch (e) {}
+        }
+
+        function downloadSaveFile() {
+            saveGame();
+            const payload = getSavePayload();
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nalle_gg_christmas_save_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            sfx.playTick(1.4);
+            showToast(`💾 Save file downloaded (${state.inventory.length} skins, ${formatMoney(state.balance)})`, 'gold');
+        }
+
+        function handleLoadSaveFile(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (!data || typeof data.balance !== 'number' || !Array.isArray(data.inventory)) {
+                        showToast('⚠️ Invalid save file format.', 'error');
+                        return;
+                    }
+                    state.balance = data.balance;
+                    state.inventory = data.inventory;
+                    if (typeof data.casesOpened === 'number') state.casesOpened = data.casesOpened;
+                    if (typeof data.grailsPulled === 'number') state.grailsPulled = data.grailsPulled;
+                    if (typeof data.bestPullValue === 'number') state.bestPullValue = data.bestPullValue;
+                    state.mergesDone = typeof data.mergesDone === 'number' ? data.mergesDone : 0;
+                    state.bestFused = typeof data.bestFused === 'number' ? data.bestFused : 1;
+                    saveGame();
+                    updateHUD();
+                    renderFullInventory();
+                    renderUpgraderTab();
+                    renderMerger();
+                    sfx.playDropFanfare('legendary');
+                    showToast(`📂 Restored ${formatMoney(state.balance)} and ${state.inventory.length} skins!`, 'gold');
+                } catch (err) {
+                    showToast('⚠️ Error parsing .json save file.', 'error');
+                } finally {
+                    event.target.value = '';
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function openResetModal() { const m = getEl('resetConfirmModal'); if (m) { m.classList.remove('hidden'); m.classList.add('flex'); } }
+        function closeResetModal() { const m = getEl('resetConfirmModal'); if (m) { m.classList.add('hidden'); m.classList.remove('flex'); } }
+        function confirmResetSaveData() {
+            state.balance = 250.00;
+            state.casesOpened = 0;
+            state.grailsPulled = 0;
+            state.bestPullValue = 0.00;
+            state.mergesDone = 0;
+            state.bestFused = 1;
+            MU.a = MU.b = null; MU.last = null;
+            state.inventory = [];
+            state.upgraderSelectedUid = null;
+            saveGame();
+            updateHUD();
+            renderFullInventory();
+            renderUpgraderTab();
+            renderMerger();
+            closeResetModal();
+            showToast('🔄 Save data reset to fresh $250.00 state.', 'success');
+        }
+
+        window.addEventListener('beforeunload', saveGame);
+
+        /**************************************************************
+         * 5. ITEM ROLLING (100% FAIR PROBABILITIES)
+         **************************************************************/
+        function formatMoney(val) {
+            return '$' + Number(val || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function getWear(f) {
+            if (f < 0.07) return 'Factory New';
+            if (f < 0.15) return 'Minimal Wear';
+            if (f < 0.38) return 'Field-Tested';
+            if (f < 0.45) return 'Well-Worn';
+            return 'Battle-Scarred';
+        }
+
+        function rollSkin(caseObj) {
+            const w = caseObj.weights;
+            const total = w.common + w.rare + w.epic + w.legendary + w.mystical + (w.santa || 0) + (w.snowman || 0);
+            let roll = Math.random() * total;
+            let chosenRarity = 'common';
+
+            if (w.snowman && roll < w.snowman) {
+                chosenRarity = 'snowman';
+            } else {
+                roll -= (w.snowman || 0);
+                if (w.santa && roll < w.santa) {
+                    chosenRarity = 'santa';
+                } else {
+                    roll -= (w.santa || 0);
+                    if (roll < w.mystical) {
+                        chosenRarity = 'mystical';
+                    } else {
+                        roll -= w.mystical;
+                        if (roll < w.legendary) {
+                            chosenRarity = 'legendary';
+                        } else {
+                            roll -= w.legendary;
+                            if (roll < w.epic) {
+                                chosenRarity = 'epic';
+                            } else {
+                                roll -= w.epic;
+                                if (roll < w.rare) {
+                                    chosenRarity = 'rare';
+                                } else {
+                                    chosenRarity = 'common';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            const pool = NALLE_SKINS.filter(s => s.rarity === chosenRarity);
+            const baseSkin = pool[Math.floor(Math.random() * pool.length)] || NALLE_SKINS[0];
+            return createSkinInstance(baseSkin);
+        }
+
+        function createSkinInstance(baseSkin) {
+            const isHighGrail = baseSkin.rarity === 'mystical' || baseSkin.rarity === 'santa' || baseSkin.rarity === 'snowman';
+            const floatVal = Number((Math.random() * (isHighGrail ? 0.008 : 0.85)).toFixed(6));
+            const wear = getWear(floatVal);
+            const isStatTrak = Math.random() < 0.15 || isHighGrail;
+
+            let mult = wear === 'Factory New' ? 1.25 : 1.0;
+            if (isStatTrak) mult *= 1.2;
+
+            const finalPrice = isHighGrail ? baseSkin.basePrice : Number((baseSkin.basePrice * mult).toFixed(2));
+
+            return {
+                uid: 'nalle_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+                skinId: baseSkin.id,
+                name: baseSkin.name,
+                subtitle: baseSkin.subtitle,
+                rarity: baseSkin.rarity,
+                theme: baseSkin.theme,
+                price: finalPrice,
+                floatVal,
+                wear,
+                isStatTrak,
+                selfieCount: isStatTrak ? Math.floor(Math.random() * 800) + 10 : 0,
+                locked: isHighGrail,
+                fusedCount: 1
+            };
+        }
+
+        /**************************************************************
+         * 6. CS:GO HORIZONTAL SPINNER WITH TICK SOUNDS
+         **************************************************************/
+        const TOTAL_REEL_CARDS = 80;
+        const WINNING_INDEX = 70;
+        const CARD_WIDTH = 170;
+        const CARD_GAP = 10;
+        const CARD_STEP = CARD_WIDTH + CARD_GAP;
+
+        function buildReelCardHTML(item, idTag) {
+            const rInfo = RARITIES[item.rarity] || RARITIES.common;
+            return `
+                <div class="reel-card ${rInfo.cardClass} p-2 flex flex-col justify-between">
+                    <div class="flex items-center justify-between z-10">
+                        <span class="text-[9px] font-display font-black uppercase px-1.5 py-0.5 rounded ${rInfo.badgeBg}">
+                            ${rInfo.name}
+                        </span>
+                        <span class="text-[10px] font-mono-tech font-bold text-emerald-400">${formatMoney(item.price)}</span>
+                    </div>
+                    <div class="w-28 h-28 mx-auto my-0.5 relative">
+                        ${renderNalleLoSVG({ id: item.skinId, theme: item.theme }, idTag)}
+                    </div>
+                    <div class="z-10 text-left bg-black/60 px-2 py-1 rounded-md">
+                        <div class="text-[11px] font-display font-bold text-white truncate">${item.name}</div>
+                        <div class="text-[9px] font-mono-tech text-slate-400 truncate">${item.subtitle}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function populateInitialReels() {
+            const activeCase = CASES.find(c => c.id === state.selectedCaseId) || CASES[0];
+            for (let r = 0; r < 3; r++) {
+                const strip = getEl(`reelStrip-${r}`);
+                if (!strip) continue;
+                strip.style.transition = 'none';
+                strip.style.transform = 'translateX(0px)';
+                let html = '';
+                for (let i = 0; i < 24; i++) {
+                    html += buildReelCardHTML(rollSkin(activeCase), `init_${r}_${i}`);
+                }
+                strip.innerHTML = html;
+            }
+        }
+
+        function startCaseSpin() {
+            if (state.isSpinning) return;
+
+            const activeCase = CASES.find(c => c.id === state.selectedCaseId) || CASES[0];
+            const totalCost = Number((activeCase.price * state.reelCount).toFixed(2));
+
+            if (state.balance < totalCost) {
+                state.autoSpin = false;
+                updateAutoSpinUI();
+                showToast(`⚠️ Insufficient balance! Need ${formatMoney(totalCost)} to open.`, 'error');
+                return;
+            }
+
+            closeUnboxModal();
+
+            state.balance = Number((state.balance - totalCost).toFixed(2));
+            state.casesOpened += state.reelCount;
+            state.isSpinning = true;
+            saveGame();
+            updateHUD();
+
+            const openBtn = getEl('openCaseMainBtn');
+            if (openBtn) {
+                openBtn.disabled = true;
+                openBtn.classList.add('opacity-60', 'cursor-not-allowed');
+            }
+
+            const winners = [];
+            const spinDuration = state.fastSpin ? 1400 : 5200;
+
+            for (let r = 0; r < state.reelCount; r++) {
+                const strip = getEl(`reelStrip-${r}`);
+                const viewport = getEl(`reelViewport-${r}`);
+                if (!strip || !viewport) continue;
+
+                const winningItem = rollSkin(activeCase);
+                winners.push(winningItem);
+
+                let stripHTML = '';
+                for (let i = 0; i < TOTAL_REEL_CARDS; i++) {
+                    if (i === WINNING_INDEX) {
+                        stripHTML += buildReelCardHTML(winningItem, `spin_${r}_${i}`);
+                    } else {
+                        stripHTML += buildReelCardHTML(rollSkin(activeCase), `spin_${r}_${i}`);
+                    }
+                }
+
+                strip.style.transition = 'none';
+                strip.style.transform = 'translateX(0px)';
+                strip.innerHTML = stripHTML;
+                void strip.offsetWidth;
+
+                const viewportWidth = viewport.clientWidth || 800;
+                const winningCardCenter = (WINNING_INDEX * CARD_STEP) + (CARD_WIDTH / 2);
+                const jitter = (Math.random() - 0.5) * 110;
+                const targetTranslateX = -(winningCardCenter - (viewportWidth / 2) + jitter);
+
+                strip.style.transition = `transform ${spinDuration}ms cubic-bezier(0.07, 0.85, 0.14, 1)`;
+                strip.style.transform = `translateX(${targetTranslateX}px)`;
+            }
+
+            const strip0 = getEl('reelStrip-0');
+            const viewport0 = getEl('reelViewport-0');
+            let lastCardTickIndex = -1;
+            const startTime = performance.now();
+
+            function monitorTicks(now) {
+                if (!state.isSpinning || !strip0 || !viewport0) return;
+                const style = window.getComputedStyle(strip0);
+                const matrix = new DOMMatrixReadOnly(style.transform);
+                const currentX = Math.abs(matrix.m41);
+                const centerPos = currentX + (viewport0.clientWidth / 2);
+                const cardIndex = Math.floor(centerPos / CARD_STEP);
+
+                if (cardIndex !== lastCardTickIndex) {
+                    lastCardTickIndex = cardIndex;
+                    const progress = Math.min(1, (now - startTime) / spinDuration);
+                    sfx.playTick(0.85 + (1 - progress) * 0.35);
+                }
+
+                if (now - startTime < spinDuration) {
+                    requestAnimationFrame(monitorTicks);
+                }
+            }
+            requestAnimationFrame(monitorTicks);
+
+            setTimeout(() => {
+                finishCaseSpin(winners);
+            }, spinDuration + 100);
+        }
+
+        function finishCaseSpin(winners) {
+            state.isSpinning = false;
+            state.lastUnboxedItems = winners;
+
+            const openBtn = getEl('openCaseMainBtn');
+            if (openBtn) {
+                openBtn.disabled = false;
+                openBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+            }
+
+            let highestRarity = 'common';
+            const rarityRank = { common: 1, rare: 2, epic: 3, legendary: 4, mystical: 5, santa: 6, snowman: 7 };
+
+            winners.forEach(item => {
+                state.inventory.unshift(item);
+                if (item.price > state.bestPullValue) state.bestPullValue = item.price;
+                if (item.rarity === 'mystical' || item.rarity === 'santa' || item.rarity === 'snowman') state.grailsPulled++;
+                if (rarityRank[item.rarity] > rarityRank[highestRarity]) highestRarity = item.rarity;
+                pushDropToLiveTicker(item, true);
+            });
+
+            sfx.playDropFanfare(highestRarity);
+
+            if (highestRarity === 'santa' || highestRarity === 'snowman') {
+                triggerBlizzardShow();
+            } else if (highestRarity === 'mystical') {
+                document.body.classList.add('shake-active');
+                setTimeout(() => document.body.classList.remove('shake-active'), 750);
+            }
+
+            saveGame();
+            updateHUD();
+            renderFullInventory();
+            showUnboxModal(winners, highestRarity);
+
+            if (state.autoSpin && highestRarity !== 'mystical' && highestRarity !== 'santa' && highestRarity !== 'snowman') {
+                setTimeout(() => {
+                    if (state.autoSpin && !state.isSpinning) startCaseSpin();
+                }, 1400);
+            } else if (state.autoSpin) {
+                state.autoSpin = false;
+                updateAutoSpinUI();
+            }
+        }
+
+        /**************************************************************
+         * 7. 0.01% ABSOLUTE SANTA & SNOWMAN SHOWCASE ENGINE
+         **************************************************************/
+        function triggerBlizzardShow() {
+            document.body.classList.add('shake-active');
+            setTimeout(() => document.body.classList.remove('shake-active'), 800);
+
+            const aurora = getEl('auroraOverlay');
+            if (aurora) {
+                aurora.classList.add('active');
+                setTimeout(() => aurora.classList.remove('active'), 9000);
+            }
+
+            startBlizzardStorm(450);
+        }
+
+        let blizzardParticles = [];
+        let blizzardActive = false;
+
+        function startBlizzardStorm(count = 350) {
+            const bCanvas = getEl('blizzardCanvas');
+            if (!bCanvas) return;
+            bCanvas.width = window.innerWidth;
+            bCanvas.height = window.innerHeight;
+
+            blizzardParticles = [];
+            for (let i = 0; i < count; i++) {
+                blizzardParticles.push({
+                    x: Math.random() * bCanvas.width,
+                    y: Math.random() * bCanvas.height,
+                    vx: Math.random() * 8 + 4,
+                    vy: Math.random() * 6 + 3,
+                    r: Math.random() * 4 + 1.5,
+                    gold: Math.random() < 0.25,
+                    alpha: Math.random() * 0.9 + 0.1
+                });
+            }
+
+            blizzardActive = true;
+            setTimeout(() => { blizzardActive = false; }, 6000);
+        }
+
+        function runBlizzardLoop() {
+            const bCanvas = getEl('blizzardCanvas');
+            if (!bCanvas) return;
+            const bCtx = bCanvas.getContext('2d');
+            bCtx.clearRect(0, 0, bCanvas.width, bCanvas.height);
+
+            if (blizzardActive || blizzardParticles.length > 0) {
+                for (let i = blizzardParticles.length - 1; i >= 0; i--) {
+                    const p = blizzardParticles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x > bCanvas.width) p.x = -10;
+                    if (p.y > bCanvas.height) p.y = -10;
+
+                    if (!blizzardActive) p.alpha -= 0.01;
+
+                    if (p.alpha <= 0) {
+                        blizzardParticles.splice(i, 1);
+                        continue;
+                    }
+
+                    bCtx.save();
+                    bCtx.globalAlpha = p.alpha;
+                    bCtx.fillStyle = p.gold ? '#ffd700' : '#ffffff';
+                    bCtx.shadowColor = p.gold ? '#ffd700' : '#ffffff';
+                    bCtx.shadowBlur = p.gold ? 8 : 4;
+                    bCtx.beginPath();
+                    bCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    bCtx.fill();
+                    bCtx.restore();
+                }
+            }
+            requestAnimationFrame(runBlizzardLoop);
+        }
+
+        /**************************************************************
+         * 8. UNBOX MODAL & INSPECT
+         **************************************************************/
+        function showUnboxModal(items, highestRarity) {
+            const modal = getEl('unboxModal');
+            const modalCard = getEl('unboxModalCard');
+            const badge = getEl('modalRarityBadge');
+            const stBadge = getEl('modalStatTrakBadge');
+            const container = getEl('modalItemsContainer');
+            const totalText = getEl('modalTotalWonText');
+            const sellBtn = getEl('modalSellBtn');
+            if (!modal || !container) return;
+
+            const rInfo = RARITIES[highestRarity] || RARITIES.common;
+            if (badge) {
+                badge.className = `px-3 py-1 rounded-lg font-display font-black text-xs uppercase tracking-wider ${rInfo.badgeBg}`;
+                badge.textContent = highestRarity === 'santa' 
+                    ? '★ 0.01% ABSOLUTE SANTA UNBOXED ★' 
+                    : (highestRarity === 'snowman' ? '★ 5% SNOWMAN TEDDY UNBOXED ★' : (highestRarity === 'mystical' ? '★ 0.1% MYSTICAL DEITY UNBOXED ★' : `${rInfo.name} UNBOXED`));
+            }
+
+            if (modalCard) {
+                if (highestRarity === 'santa') {
+                    modalCard.className = 'relative w-full max-w-2xl rounded-2xl bg-[#1e070c] border-2 border-red-500 p-6 shadow-[0_0_80px_rgba(239,68,68,0.7)] overflow-hidden';
+                } else if (highestRarity === 'snowman') {
+                    modalCard.className = 'relative w-full max-w-2xl rounded-2xl bg-[#082f49] border-2 border-sky-400 p-6 shadow-[0_0_80px_rgba(56,189,248,0.7)] overflow-hidden';
+                } else if (highestRarity === 'mystical') {
+                    modalCard.className = 'relative w-full max-w-2xl rounded-2xl bg-[#1a1405] border-2 border-yellow-400 p-6 shadow-[0_0_80px_rgba(255,215,0,0.65)] overflow-hidden';
+                } else {
+                    modalCard.className = 'relative w-full max-w-2xl rounded-2xl bg-[#0e1320] border border-slate-700 p-6 shadow-2xl overflow-hidden';
+                }
+            }
+
+            if (stBadge) {
+                if (items.length === 1 && items[0].isStatTrak) {
+                    stBadge.classList.remove('hidden');
+                    stBadge.textContent = `StatTrak™ Selfies: ${items[0].selfieCount}`;
+                } else {
+                    stBadge.classList.add('hidden');
+                }
+            }
+
+            container.className = `grid grid-cols-1 ${items.length > 1 ? 'sm:grid-cols-' + items.length : ''} gap-4 place-items-center`;
+
+            let totalValue = 0;
+            let sellableValue = 0;
+            container.innerHTML = items.map((item, idx) => {
+                totalValue += item.price;
+                if (!item.locked) sellableValue += item.price;
+                const ir = RARITIES[item.rarity] || RARITIES.common;
+                return `
+                    <div class="w-full max-w-xs rounded-2xl p-4 ${ir.cardClass} flex flex-col items-center text-center">
+                        <div class="w-44 h-44 mb-3 rounded-xl overflow-hidden shadow-lg">
+                            ${renderNalleLoSVG({ id: item.skinId, theme: item.theme }, 'modal_' + idx)}
+                        </div>
+                        <span class="text-[10px] font-mono-tech uppercase px-2 py-0.5 rounded bg-black/60 text-amber-300 mb-1">
+                            Code N18 • ${item.wear} ${item.locked ? '• 🔒 AUTO-LOCKED' : ''}
+                        </span>
+                        <h3 class="font-display font-black text-xl text-white">${item.name}</h3>
+                        <p class="text-xs text-slate-300 mb-2">${item.subtitle}</p>
+                        <div class="w-full bg-black/50 rounded-lg p-2 text-[11px] font-mono-tech flex justify-between items-center border border-white/10">
+                            <span class="text-slate-400">Float: <b class="text-slate-200">${item.floatVal}</b></span>
+                            <span class="text-emerald-400 font-bold text-sm">${formatMoney(item.price)}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            if (totalText) totalText.innerHTML = `Total Pull Value: <span class="text-emerald-400 font-bold">${formatMoney(totalValue)}</span>`;
+
+            if (sellBtn) {
+                if (items[0].isPreviewOnly || sellableValue <= 0) {
+                    sellBtn.classList.add('hidden');
+                } else {
+                    sellBtn.classList.remove('hidden');
+                    sellBtn.textContent = `💰 QUICK SELL (${formatMoney(sellableValue)})`;
+                }
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function inspectSkinById(skinId) {
+            const baseSkin = NALLE_SKINS.find(s => s.id === skinId);
+            if (!baseSkin) return;
+            const previewItem = {
+                uid: 'preview',
+                skinId: baseSkin.id,
+                name: baseSkin.name,
+                subtitle: baseSkin.subtitle,
+                rarity: baseSkin.rarity,
+                theme: baseSkin.theme,
+                price: baseSkin.basePrice,
+                floatVal: '0.000180',
+                wear: 'Factory New',
+                isStatTrak: true,
+                selfieCount: 500,
+                isPreviewOnly: true
+            };
+            showUnboxModal([previewItem], baseSkin.rarity);
+        }
+
+        function closeUnboxModal() {
+            const modal = getEl('unboxModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function sellCurrentModalItems() {
+            if (!state.lastUnboxedItems || !state.lastUnboxedItems.length) return;
+            let gained = 0;
+            state.lastUnboxedItems.forEach(item => {
+                const idx = state.inventory.findIndex(i => i.uid === item.uid);
+                if (idx !== -1 && !state.inventory[idx].locked) {
+                    gained += state.inventory[idx].price;
+                    state.inventory.splice(idx, 1);
+                }
+            });
+            if (gained > 0) {
+                state.balance = Number((state.balance + gained).toFixed(2));
+                state.lastUnboxedItems = [];
+                sfx.playTick(1.4);
+                saveGame();
+                updateHUD();
+                renderFullInventory();
+                showToast(`💰 Sold pull for ${formatMoney(gained)}`, 'success');
+            }
+            closeUnboxModal();
+        }
+
+        /**************************************************************
+         * 9. UPGRADER MINIGAME
+         **************************************************************/
+        function setUpgradeMultiplier(mult) {
+            if (state.isUpgrading) return;
+            state.upgraderMultiplier = mult;
+            [1.5, 2, 5, 10].forEach(m => {
+                const btn = getEl(`upgMult-${m}`);
+                if (btn) {
+                    btn.className = m === mult
+                        ? 'px-3 py-1.5 rounded-lg font-mono-tech text-xs font-bold bg-amber-500 text-slate-950'
+                        : 'px-3 py-1.5 rounded-lg font-mono-tech text-xs font-bold bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
+                }
+            });
+            renderUpgraderTab();
+        }
+
+        function selectInventoryForUpgrader(uid) {
+            if (state.isUpgrading) return;
+            state.upgraderSelectedUid = uid;
+            renderUpgraderTab();
+        }
+
+        function renderUpgraderTab() {
+            const sourceSlot = getEl('upgraderSourceSlot');
+            const targetSlot = getEl('upgraderTargetSlot');
+            const chanceText = getEl('upgraderChanceText');
+            const arcCircle = getEl('upgraderArcCircle');
+            const invList = getEl('upgraderInventoryList');
+            if (!sourceSlot || !targetSlot || !invList) return;
+
+            const unlocked = state.inventory.filter(i => !i.locked);
+            const selectedItem = unlocked.find(i => i.uid === state.upgraderSelectedUid) || unlocked[0];
+            if (selectedItem) state.upgraderSelectedUid = selectedItem.uid;
+
+            const chancePercent = Number((95 / state.upgraderMultiplier).toFixed(2));
+            if (chanceText) chanceText.textContent = `${chancePercent}%`;
+            if (arcCircle) {
+                const circ = 2 * Math.PI * 92;
+                arcCircle.setAttribute('stroke-dasharray', `${(chancePercent / 100) * circ} ${circ}`);
+            }
+
+            if (!selectedItem) {
+                sourceSlot.innerHTML = `<p class="text-sm text-slate-400 text-center">No unlocked skins available.</p>`;
+                targetSlot.innerHTML = `<p class="text-sm text-slate-400 text-center">Wager an unlocked skin to preview target.</p>`;
+            } else {
+                const sr = RARITIES[selectedItem.rarity] || RARITIES.common;
+                sourceSlot.innerHTML = `
+                    <span class="text-[10px] uppercase font-mono-tech text-slate-400 mb-2">YOUR WAGERED SKIN</span>
+                    <div class="w-36 h-36 rounded-xl overflow-hidden mb-2 ${sr.cardClass} p-1">
+                        ${renderNalleLoSVG({ id: selectedItem.skinId, theme: selectedItem.theme }, 'upg_src')}
+                    </div>
+                    <h4 class="font-display font-bold text-white">${selectedItem.name}</h4>
+                    <span class="font-mono-tech font-bold text-emerald-400 text-sm">${formatMoney(selectedItem.price)}</span>
+                `;
+
+                const targetVal = Number((selectedItem.price * state.upgraderMultiplier).toFixed(2));
+                let targetSkin = NALLE_SKINS.reduce((prev, curr) => Math.abs(curr.basePrice - targetVal) < Math.abs(prev.basePrice - targetVal) ? curr : prev);
+                if (targetVal >= 300000) targetSkin = NALLE_SKINS.find(s => s.id === 'snowman_teddy');
+                else if (targetVal >= 100000) targetSkin = NALLE_SKINS.find(s => s.id === 'absolute_santa');
+                else if (targetVal >= 15000) targetSkin = NALLE_SKINS.find(s => s.id === 'ascended_deity');
+                const tr = RARITIES[targetSkin.rarity] || RARITIES.common;
+
+                targetSlot.innerHTML = `
+                    <span class="text-[10px] uppercase font-mono-tech text-amber-400 mb-2">${state.upgraderMultiplier}x TARGET SKIN</span>
+                    <div class="w-36 h-36 rounded-xl overflow-hidden mb-2 ${tr.cardClass} p-1">
+                        ${renderNalleLoSVG(targetSkin, 'upg_trg')}
+                    </div>
+                    <h4 class="font-display font-bold text-white">${targetSkin.name}</h4>
+                    <span class="font-mono-tech font-bold text-amber-400 text-sm">${formatMoney(targetVal)}</span>
+                `;
+            }
+
+            invList.innerHTML = unlocked.map((item, idx) => {
+                const r = RARITIES[item.rarity] || RARITIES.common;
+                const isSel = item.uid === state.upgraderSelectedUid;
+                return `
+                    <div onclick="selectInventoryForUpgrader('${item.uid}')" class="cursor-pointer rounded-xl p-2.5 ${r.cardClass} ${isSel ? 'ring-2 ring-amber-400' : 'opacity-80 hover:opacity-100'} transition">
+                        <div class="w-20 h-20 mx-auto">
+                            ${renderNalleLoSVG({ id: item.skinId, theme: item.theme }, 'upginv_' + idx)}
+                        </div>
+                        <div class="text-xs font-display font-bold text-white truncate mt-1">${item.name}</div>
+                        <div class="text-xs font-mono-tech text-emerald-400 font-bold">${formatMoney(item.price)}</div>
+                    </div>
+                `;
+            }).join('') || `<p class="col-span-full text-xs text-slate-500">No unlocked items in inventory.</p>`;
+        }
+
+        function runUpgraderSpin() {
+            if (state.isUpgrading) return;
+            const selected = state.inventory.find(i => i.uid === state.upgraderSelectedUid && !i.locked);
+            if (!selected) {
+                showToast('Select an unlocked skin first!', 'error');
+                return;
+            }
+
+            state.isUpgrading = true;
+            const status = getEl('upgraderStatusText');
+            if (status) {
+                status.textContent = 'SPINNING...';
+                status.className = 'text-xs font-mono-tech text-amber-300 mt-1 animate-pulse';
+            }
+
+            const chancePercent = 95 / state.upgraderMultiplier;
+            const isWin = (Math.random() * 100) <= chancePercent;
+            const winAngleLimit = (chancePercent / 100) * 360;
+            const landingDeg = isWin ? Math.random() * (winAngleLimit * 0.88) + 4 : winAngleLimit + 8 + Math.random() * (350 - winAngleLimit);
+
+            state.upgraderWheelAngle += (360 * 6) + ((landingDeg - (state.upgraderWheelAngle % 360) + 360) % 360);
+            const rotor = getEl('upgraderWheelRotor');
+            if (rotor) rotor.style.transform = `rotate(${state.upgraderWheelAngle}deg)`;
+            sfx.playTick(1.1);
+
+            setTimeout(() => {
+                state.isUpgrading = false;
+                const idx = state.inventory.findIndex(i => i.uid === selected.uid);
+
+                if (isWin && idx !== -1) {
+                    const newPrice = Number((selected.price * state.upgraderMultiplier).toFixed(2));
+                    let targetSkin = NALLE_SKINS.reduce((prev, curr) => Math.abs(curr.basePrice - newPrice) < Math.abs(prev.basePrice - newPrice) ? curr : prev);
+                    if (newPrice >= 300000) targetSkin = NALLE_SKINS.find(s => s.id === 'snowman_teddy');
+                    else if (newPrice >= 100000) targetSkin = NALLE_SKINS.find(s => s.id === 'absolute_santa');
+                    else if (newPrice >= 15000) targetSkin = NALLE_SKINS.find(s => s.id === 'ascended_deity');
+
+                    const upgraded = {
+                        ...selected,
+                        skinId: targetSkin.id,
+                        name: targetSkin.name,
+                        subtitle: targetSkin.subtitle,
+                        rarity: targetSkin.rarity,
+                        theme: targetSkin.theme,
+                        price: newPrice,
+                        fusedCount: 1,
+                        locked: targetSkin.rarity === 'mystical' || targetSkin.rarity === 'santa' || targetSkin.rarity === 'snowman'
+                    };
+                    state.inventory[idx] = upgraded;
+                    if (newPrice > state.bestPullValue) state.bestPullValue = newPrice;
+                    if (status) {
+                        status.textContent = 'UPGRADE HIT!';
+                        status.className = 'text-xs font-mono-tech text-emerald-400 font-bold mt-1';
+                    }
+                    sfx.playDropFanfare(upgraded.rarity);
+                    showToast(`⚡ Won ${upgraded.name} (${formatMoney(newPrice)})!`, 'gold');
+                } else if (idx !== -1) {
+                    state.inventory.splice(idx, 1);
+                    const nextUnlocked = state.inventory.find(i => !i.locked);
+                    state.upgraderSelectedUid = nextUnlocked ? nextUnlocked.uid : null;
+                    if (status) {
+                        status.textContent = 'UPGRADE FAILED';
+                        status.className = 'text-xs font-mono-tech text-rose-400 font-bold mt-1';
+                    }
+                    sfx.playTick(0.5);
+                }
+
+                saveGame();
+                updateHUD();
+                renderFullInventory();
+                renderUpgraderTab();
+            }, 3850);
+        }
+
+        /**************************************************************
+         * 10. INVENTORY, CASES & HUD LOGIC
+         **************************************************************/
+        function renderCaseSelector() {
+            const grid = getEl('caseSelectionGrid');
+            const activeCase = CASES.find(c => c.id === state.selectedCaseId) || CASES[0];
+            if (!grid) return;
+
+            grid.innerHTML = CASES.map(c => {
+                const isSelected = c.id === state.selectedCaseId;
+                return `
+                    <div onclick="selectCase('${c.id}')" class="cursor-pointer rounded-2xl p-3.5 border transition-all flex flex-col justify-between ${
+                        isSelected
+                            ? 'bg-gradient-to-b from-red-500/20 to-slate-900/95 border-red-400 shadow-[0_0_25px_rgba(239,68,68,0.25)]'
+                            : 'bg-slate-900/70 border-slate-800 hover:border-slate-700'
+                    }">
+                        <div>
+                            <div class="flex items-center justify-between gap-1 mb-1.5">
+                                <span class="text-[9px] font-display font-bold uppercase px-2 py-0.5 rounded ${
+                                    isSelected ? 'bg-red-500 text-white' : 'bg-slate-800 text-slate-300'
+                                }">${c.badge}</span>
+                                <span class="font-mono-tech font-bold text-sm text-emerald-400">${formatMoney(c.price)}</span>
+                            </div>
+                            <h3 class="font-display font-bold text-sm text-white">${c.name}</h3>
+                            <p class="text-[11px] text-slate-400 mt-1 line-clamp-2">${c.desc}</p>
+                        </div>
+                        <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-mono-tech">
+                            <span class="text-slate-400">${c.id === 'snowman_case' ? 'Snowman Rate:' : 'Santa / Deity:'}</span>
+                            <span class="text-amber-400 font-bold">${c.id === 'snowman_case' ? '5.0%' : (c.weights.santa || 0) + '% / ' + c.weights.mystical + '%'}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            setText('oddLabelCommon', `${activeCase.weights.common}%`);
+            setText('oddLabelRare', `${activeCase.weights.rare}%`);
+            setText('oddLabelEpic', `${activeCase.weights.epic}%`);
+            setText('oddLabelLegendary', `${activeCase.weights.legendary}%`);
+            setText('oddLabelMystical', `${activeCase.weights.mystical}%`);
+            setText('oddLabelSanta', `${activeCase.weights.santa || 0}%`);
+
+            setText('activeCaseBadge', activeCase.badge);
+            setText('activeCaseTitle', activeCase.name);
+            updateOpenButtonPrice();
+        }
+
+        function selectCase(caseId) {
+            if (state.isSpinning) return;
+            state.selectedCaseId = caseId;
+            sfx.playTick(1.15);
+            renderCaseSelector();
+            populateInitialReels();
+        }
+
+        function setReelCount(count) {
+            if (state.isSpinning) return;
+            state.reelCount = count;
+            [1, 2, 3].forEach(n => {
+                const btn = getEl(`reelCountBtn-${n}`);
+                const vp = getEl(`reelViewport-${n - 1}`);
+                if (btn) {
+                    btn.className = n === count
+                        ? 'px-2.5 py-1 rounded-lg text-xs font-mono-tech font-bold bg-amber-500 text-slate-950'
+                        : 'px-2.5 py-1 rounded-lg text-xs font-mono-tech font-bold text-slate-400 hover:text-white';
+                }
+                if (vp) {
+                    if (n <= count) vp.classList.remove('hidden');
+                    else vp.classList.add('hidden');
+                }
+            });
+            sfx.playTick(1.2);
+            updateOpenButtonPrice();
+        }
+
+        function updateOpenButtonPrice() {
+            const activeCase = CASES.find(c => c.id === state.selectedCaseId) || CASES[0];
+            setText('openBtnPriceTag', formatMoney(activeCase.price * state.reelCount));
+        }
+
+        function toggleFastSpin() {
+            state.fastSpin = !state.fastSpin;
+            const el = getEl('fastSpinState');
+            if (el) {
+                el.textContent = state.fastSpin ? 'ON' : 'OFF';
+                el.className = state.fastSpin ? 'text-amber-400 font-bold' : 'text-slate-400';
+            }
+            sfx.playTick(1.3);
+        }
+
+        function toggleAutoSpin() {
+            state.autoSpin = !state.autoSpin;
+            updateAutoSpinUI();
+            sfx.playTick(1.3);
+            if (state.autoSpin && !state.isSpinning) startCaseSpin();
+        }
+
+        function updateAutoSpinUI() {
+            const el = getEl('autoSpinState');
+            if (el) {
+                el.textContent = state.autoSpin ? 'ON' : 'OFF';
+                el.className = state.autoSpin ? 'text-emerald-400 font-bold' : 'text-slate-400';
+            }
+        }
+
+        function renderCaseContentsCatalog() {
+            const cardsHTML = NALLE_SKINS.slice().reverse().map((skin, idx) => {
+                const r = RARITIES[skin.rarity] || RARITIES.common;
+                return `
+                    <div onclick="inspectSkinById('${skin.id}')" class="cursor-pointer rounded-xl p-2.5 ${r.cardClass} hover:-translate-y-1 transition flex flex-col justify-between group">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[9px] font-display font-black uppercase px-1.5 py-0.5 rounded ${r.badgeBg}">
+                                ${r.name}
+                            </span>
+                            <span class="text-[10px] font-mono-tech font-bold text-emerald-400">${formatMoney(skin.basePrice)}</span>
+                        </div>
+                        <div class="w-24 h-24 mx-auto my-1 group-hover:scale-105 transition-transform">
+                            ${renderNalleLoSVG(skin, 'cat_' + idx)}
+                        </div>
+                        <div class="mt-1">
+                            <div class="font-display font-bold text-xs text-white truncate">${skin.name}</div>
+                            <div class="text-[9px] text-slate-300/80 truncate">${skin.subtitle}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            setHtml('caseContentsGrid', cardsHTML);
+            setHtml('codexAllSkinsGrid', cardsHTML);
+
+            const santaSkin = NALLE_SKINS.find(s => s.id === 'absolute_santa');
+            if (santaSkin) setHtml('santaShowcaseSvgHolder', renderNalleLoSVG(santaSkin, 'showcase_santa'));
+
+            const mysticalSkin = NALLE_SKINS.find(s => s.id === 'ascended_deity');
+            if (mysticalSkin) setHtml('mysticalShowcaseSvgHolder', renderNalleLoSVG(mysticalSkin, 'showcase_deity'));
+        }
+
+        function renderFullInventory() {
+            const grid = getEl('fullInventoryGrid');
+            if (!grid) return;
+
+            if (!state.inventory.length) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center bg-slate-950/50 rounded-2xl border border-slate-800">
+                        <div class="text-4xl mb-2">🧸</div>
+                        <p class="font-display font-bold text-slate-300">Your Inventory is Empty</p>
+                        <p class="text-xs text-slate-500 mt-1">Spin cases or import a saved .json file.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = state.inventory.map((item, idx) => {
+                const r = RARITIES[item.rarity] || RARITIES.common;
+                const isLocked = Boolean(item.locked);
+                return `
+                    <div class="rounded-xl p-3 ${r.cardClass} flex flex-col justify-between relative">
+                        <div class="flex items-center justify-between gap-1">
+                            <span class="text-[10px] font-display font-black uppercase px-2 py-0.5 rounded ${r.badgeBg}">${r.name}</span>
+                            <button onclick="toggleItemLock('${item.uid}')" class="px-2 py-0.5 rounded text-[10px] font-mono-tech font-bold border transition ${
+                                isLocked ? 'bg-amber-400/25 text-yellow-200 border-yellow-400/60' : 'bg-black/40 text-slate-400 border-white/10'
+                            }">
+                                ${isLocked ? '🔒 LOCKED' : '🔓 LOCK'}
+                            </button>
+                        </div>
+
+                        <div onclick="inspectSkinById('${item.skinId}')" class="w-32 h-32 mx-auto my-2 cursor-pointer hover:scale-105 transition">
+                            ${renderNalleLoSVG({ id: item.skinId, theme: item.theme }, 'inv_' + idx)}
+                        </div>
+                        <div>
+                            <div class="font-display font-bold text-sm text-white truncate">${item.name}${(item.fusedCount || 1) > 1 ? ` <span class="text-fuchsia-300 text-[10px]">🧬×${item.fusedCount}</span>` : ''}</div>
+                            <div class="flex items-center justify-between text-[10px] font-mono-tech text-slate-300">
+                                <span>Float: ${item.floatVal}</span>
+                                <span>${item.wear}</span>
+                            </div>
+                            <div class="mt-2 pt-2 border-t border-white/10 flex items-center justify-between">
+                                <span class="font-mono-tech font-bold text-sm text-emerald-400">${formatMoney(item.price)}</span>
+                                ${isLocked ? `
+                                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-display font-bold bg-black/50 text-yellow-300 border border-yellow-500/30">
+                                        🛡️ PROTECTED
+                                    </span>
+                                ` : `
+                                    <button onclick="sellSingleInventoryItem('${item.uid}')" class="px-2.5 py-1 rounded-lg text-xs font-display font-bold bg-rose-500/20 hover:bg-rose-500/35 text-rose-200 border border-rose-500/40 transition">
+                                        Sell
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleItemLock(uid) {
+            const item = state.inventory.find(i => i.uid === uid);
+            if (!item) return;
+            item.locked = !item.locked;
+            sfx.playTick(item.locked ? 1.4 : 0.9);
+            saveGame();
+            renderFullInventory();
+            renderUpgraderTab();
+        }
+
+        function sellSingleInventoryItem(uid) {
+            const idx = state.inventory.findIndex(i => i.uid === uid);
+            if (idx === -1 || state.inventory[idx].locked) return;
+            state.balance = Number((state.balance + state.inventory[idx].price).toFixed(2));
+            state.inventory.splice(idx, 1);
+            sfx.playTick(1.3);
+            saveGame();
+            updateHUD();
+            renderFullInventory();
+            renderUpgraderTab();
+        }
+
+        function sellAllByRarity(rId) {
+            let gained = 0;
+            state.inventory = state.inventory.filter(item => {
+                if (item.rarity === rId && !item.locked) {
+                    gained += item.price;
+                    return false;
+                }
+                return true;
+            });
+            if (gained > 0) {
+                state.balance = Number((state.balance + gained).toFixed(2));
+                sfx.playTick(1.4);
+                saveGame();
+                updateHUD();
+                renderFullInventory();
+                renderUpgraderTab();
+                showToast(`Sold unlocked Commons for ${formatMoney(gained)}`, 'success');
+            }
+        }
+
+        function sellAllUnlocked() {
+            let gained = 0;
+            state.inventory = state.inventory.filter(item => {
+                if (!item.locked) {
+                    gained += item.price;
+                    return false;
+                }
+                return true;
+            });
+            if (gained > 0) {
+                state.balance = Number((state.balance + gained).toFixed(2));
+                sfx.playTick(1.4);
+                saveGame();
+                updateHUD();
+                renderFullInventory();
+                renderUpgraderTab();
+                showToast(`Sold unlocked skins for ${formatMoney(gained)}`, 'success');
+            }
+        }
+
+        function updateHUD() {
+            setText('balanceDisplay', formatMoney(state.balance));
+            setText('navInvCount', String(state.inventory.length));
+            setText('statCasesOpened', String(state.casesOpened));
+            setText('mysticalHitBadge', `Grails Unboxed: ${state.grailsPulled}`);
+
+            const invTotal = state.inventory.reduce((acc, item) => acc + item.price, 0);
+            setText('statInvValue', formatMoney(invTotal));
+            setText('statBestPull', formatMoney(state.bestPullValue));
+
+            const bailoutBtn = getEl('bailoutBtn');
+            if (bailoutBtn) {
+                if (state.balance + invTotal < 5.00) bailoutBtn.classList.remove('hidden');
+                else bailoutBtn.classList.add('hidden');
+            }
+        }
+
+        function claimBankruptcyBailout() {
+            const invTotal = state.inventory.reduce((acc, item) => acc + item.price, 0);
+            if (state.balance + invTotal >= 5.00) return;
+            state.balance = Number((state.balance + 100.00).toFixed(2));
+            sfx.playTick(1.5);
+            saveGame();
+            updateHUD();
+            showToast('+$100.00 Christmas Holiday Bailout Added!', 'santa');
+        }
+
+        function toggleSound() {
+            sfx.enabled = !sfx.enabled;
+            setText('soundToggleBtn', sfx.enabled ? '🔊' : '🔇');
+        }
+
+        function switchTab(tabId) {
+            if (MU.busy && tabId !== 'merger') { showToast('🧬 Fusion in progress...', 'error'); return; }
+            ['cases', 'upgrader', 'merger', 'inventory', 'gallery'].forEach(t => {
+                const sec = getEl(`tab-${t}`);
+                const btn = getEl(`tabBtn-${t}`);
+                if (sec) {
+                    if (t === tabId) sec.classList.remove('hidden');
+                    else sec.classList.add('hidden');
+                }
+                if (btn) {
+                    btn.className = t === tabId
+                        ? 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-display font-bold tracking-wide transition-all bg-gradient-to-r from-red-500 via-amber-500 to-yellow-500 text-slate-950 shadow-md flex items-center gap-1.5'
+                        : 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-display font-bold tracking-wide transition-all text-slate-300 hover:text-white flex items-center gap-1.5';
+                }
+            });
+            if (tabId === 'merger') { renderMerger(); mfxStart(); } else mfxStop();
+            if (tabId === 'upgrader') renderUpgraderTab();
+            if (tabId === 'inventory') renderFullInventory();
+        }
+
+        /**************************************************************
+         * 11. AMBIENT SNOW PARTICLES & LIVE TICKER
+         **************************************************************/
+        const SIM_USERS = ['SantaSpins', 'NordicFlake', 'TeddyKing', 'IntertoneFan', 'BlizzardOp', 'FrostyClaw'];
+
+        function pushDropToLiveTicker(item, isPlayer = false) {
+            const container = getEl('liveTickerContainer');
+            if (!container) return;
+            const r = RARITIES[item.rarity] || RARITIES.common;
+            const user = isPlayer ? 'YOU' : SIM_USERS[Math.floor(Math.random() * SIM_USERS.length)];
+
+            const pill = document.createElement('div');
+            pill.className = `flex items-center gap-2 px-2.5 py-1 rounded-lg shrink-0 border text-xs transition-all ${
+                item.rarity === 'santa' ? 'bg-red-950/90 border-red-500 text-red-200 shadow-[0_0_15px_#ff3344]' :
+                (item.rarity === 'snowman' ? 'bg-sky-950/90 border-sky-400 text-sky-200 shadow-[0_0_15px_#38bdf8]' :
+                (item.rarity === 'mystical' ? 'bg-yellow-500/25 border-yellow-400 text-yellow-200' : 'bg-slate-900/90 border-slate-800 text-slate-200'))
+            }`;
+            pill.style.borderLeft = `3px solid ${r.color}`;
+
+            pill.innerHTML = `
+                <span class="font-mono-tech text-[10px] ${isPlayer ? 'text-amber-400 font-bold' : 'text-slate-400'}">${user}</span>
+                <span class="font-display font-bold truncate max-w-[130px]" style="color:${r.color}">${item.name}</span>
+                <span class="font-mono-tech text-[10px] text-emerald-400">${formatMoney(item.price)}</span>
+            `;
+            container.prepend(pill);
+            if (container.children.length > 14) container.removeChild(container.lastChild);
+        }
+
+        // Ambient Falling Snow
+        const snowCanvas = getEl('snowCanvas');
+        const snowCtx = snowCanvas ? snowCanvas.getContext('2d') : null;
+        let snowFlakes = [];
+
+        function resizeSnow() {
+            if (!snowCanvas) return;
+            snowCanvas.width = window.innerWidth;
+            snowCanvas.height = window.innerHeight;
+            snowFlakes = [];
+            for (let i = 0; i < 90; i++) {
+                snowFlakes.push({
+                    x: Math.random() * snowCanvas.width,
+                    y: Math.random() * snowCanvas.height,
+                    r: Math.random() * 2.5 + 0.8,
+                    speed: Math.random() * 1.2 + 0.5,
+                    wind: Math.random() * 0.5 - 0.25,
+                    alpha: Math.random() * 0.7 + 0.2
+                });
+            }
+        }
+        window.addEventListener('resize', resizeSnow);
+
+        function animateAmbientSnow() {
+            if (snowCtx && snowCanvas) {
+                snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+                snowFlakes.forEach(f => {
+                    f.y += f.speed;
+                    f.x += f.wind;
+                    if (f.y > snowCanvas.height) f.y = -5;
+                    if (f.x > snowCanvas.width) f.x = 0;
+                    if (f.x < 0) f.x = snowCanvas.width;
+
+                    snowCtx.save();
+                    snowCtx.globalAlpha = f.alpha;
+                    snowCtx.fillStyle = '#ffffff';
+                    snowCtx.beginPath();
+                    snowCtx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                    snowCtx.fill();
+                    snowCtx.restore();
+                });
+            }
+            requestAnimationFrame(animateAmbientSnow);
+        }
+
+        /**************************************************************
+         * 13. NALLE MERGER - FUSION REACTOR
+         **************************************************************/
+        const MU = { a: null, b: null, busy: false, holding: false, charge: 0, last: null, color: '#ffd700' };
+        const MFX = { cv: null, cx: null, w: 0, h: 0, on: false, raf: 0, t0: 0, parts: [], rings: [], bolts: [], trails: [], tether: true, kick: 0, ang: [0, 0, 0] };
+        const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+        const wait = ms => new Promise(r => setTimeout(r, ms));
+        const fusedOf = i => Math.max(1, i.fusedCount || 1);
+        const rgb = (hex, a) => { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
+        const mItem = uid => state.inventory.find(i => i.uid === uid) || null;
+        const mSvg = (it, tag) => renderNalleLoSVG({ id: it.skinId, theme: it.theme }, tag);
+
+        function mergerPair() {
+            let A = mItem(MU.a), B = mItem(MU.b);
+            if (!A) B = null;
+            if (B && (B.skinId !== A.skinId || B.uid === A.uid)) B = null;
+            MU.a = A ? A.uid : null; MU.b = B ? B.uid : null;
+            return { A, B };
+        }
+
+        // Exact result: values add up, best float is kept, fused count adds up
+        function mergeResult(a, b) {
+            const floatVal = Number(Math.min(Number(a.floatVal), Number(b.floatVal)).toFixed(6));
+            return {
+                ...a,
+                uid: 'nalle_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+                price: Number((a.price + b.price).toFixed(2)),
+                floatVal, wear: getWear(floatVal),
+                isStatTrak: Boolean(a.isStatTrak || b.isStatTrak),
+                selfieCount: (a.selfieCount || 0) + (b.selfieCount || 0),
+                fusedCount: fusedOf(a) + fusedOf(b),
+                locked: Boolean(a.locked || b.locked)
+            };
+        }
+
+        function slotHTML(it, side) {
+            if (!it) return `<div class="h-[250px] rounded-2xl border-2 border-dashed border-slate-700 flex flex-col items-center justify-center text-slate-500 text-center p-3"><div class="text-3xl">＋</div><div class="text-xs font-mono-tech mt-1">Pick Nalle ${side}</div></div>`;
+            const r = RARITIES[it.rarity] || RARITIES.common;
+            return `<div id="mergerCard${side}" onclick="mergerPick('${it.uid}')" class="h-[250px] cursor-pointer rounded-2xl p-3 ${r.cardClass} flex flex-col items-center text-center will-change-transform">
+                <div class="w-full flex items-center justify-between text-[10px] font-mono-tech"><span class="px-1.5 py-0.5 rounded font-display font-black uppercase ${r.badgeBg}">${r.name}</span><span>${it.locked ? '🔒' : ''}${fusedOf(it) > 1 ? ` <b class="text-fuchsia-300">🧬×${fusedOf(it)}</b>` : ''}</span></div>
+                <div class="w-32 h-32 my-1">${mSvg(it, 'mrgslot_' + side)}</div>
+                <div class="font-display font-bold text-sm text-white truncate w-full">${it.name}</div>
+                <div class="text-[10px] font-mono-tech text-slate-400">${it.wear} • ${it.floatVal}</div>
+                <div class="font-mono-tech font-bold text-emerald-400 mt-auto">${formatMoney(it.price)}</div></div>`;
+        }
+
+        function resultHTML(it) {
+            const r = RARITIES[it.rarity] || RARITIES.common;
+            return `<div id="mergerResultCard" class="relative w-44 rounded-2xl p-3 ${r.cardClass} text-center">
+                <div id="mergerStamp" class="absolute -top-3 -right-3 z-10 px-2 py-0.5 rounded-lg bg-fuchsia-500 text-white font-display font-black text-xs rotate-12 shadow-lg">🧬 ×${fusedOf(it)}</div>
+                <div class="w-32 h-32 mx-auto">${mSvg(it, 'mrg_res')}</div>
+                <div class="font-display font-bold text-sm text-white truncate">${it.name}</div>
+                <div id="mergerResultPrice" class="font-mono-tech font-bold text-emerald-400">${formatMoney(it.price)}</div>
+                <div class="text-[10px] font-mono-tech text-slate-300">${it.wear} • ${it.floatVal}${it.locked ? ' • 🔒' : ''}</div></div>`;
+        }
+
+        function mergerRenderCore(A, B) {
+            const h = getEl('mergerCoreContent'), hint = getEl('mergerHint'), rays = getEl('mergerRays');
+            if (!h || MU.busy) return;
+            if (!A && MU.last) {
+                if (h.dataset.uid !== MU.last.uid) { h.dataset.uid = MU.last.uid; h.innerHTML = resultHTML(MU.last); }
+                rays.classList.add('on'); hint.textContent = '✔ FUSION COMPLETE'; return;
+            }
+            rays.classList.remove('on'); h.dataset.uid = ''; h.style.opacity = 1;
+            if (A && B) {
+                const R = mergeResult(A, B);
+                h.innerHTML = `<div class="text-center opacity-50"><div class="w-28 h-28 mx-auto">${mSvg(R, 'mrg_prev')}</div><div class="font-mono-tech font-bold text-amber-300">${formatMoney(R.price)}</div><div class="text-[10px] font-mono-tech text-slate-300">PREVIEW • 🧬×${R.fusedCount}</div></div>`;
+                hint.textContent = `${formatMoney(A.price)} + ${formatMoney(B.price)} = ${formatMoney(R.price)}`;
+            } else {
+                h.innerHTML = '<div class="text-5xl opacity-40">🧬</div>';
+                hint.textContent = !A ? 'Pick two identical Nalles' : (state.inventory.some(i => i.uid !== A.uid && i.skinId === A.skinId) ? 'Now pick the identical twin' : 'No twin owned. Open more cases!');
+            }
+        }
+
+        function mergerPickerStates() {
+            const { A } = mergerPair();
+            document.querySelectorAll('#mergerInventoryList .mpick').forEach(el => {
+                const u = el.dataset.uid, s = el.dataset.skin, tw = Number(el.dataset.tw) > 1, sel = u === MU.a || u === MU.b;
+                el.classList.toggle('ring-2', sel);
+                el.classList.toggle('ring-amber-400', u === MU.a);
+                el.classList.toggle('ring-emerald-400', u === MU.b);
+                el.classList.toggle('opacity-40', A ? s !== A.skinId : !tw);
+                el.classList.toggle('mrg-compat', !!A && s === A.skinId && !sel);
+                el.querySelector('.mtag').textContent = u === MU.a ? 'A' : (u === MU.b ? 'B' : '');
+            });
+        }
+
+        function mergerRenderPicker() {
+            const list = getEl('mergerInventoryList'); if (!list) return;
+            const cnt = {}, mx = {};
+            state.inventory.forEach(i => { cnt[i.skinId] = (cnt[i.skinId] || 0) + 1; mx[i.skinId] = Math.max(mx[i.skinId] || 0, i.price); });
+            const items = [...state.inventory].sort((x, y) => ((cnt[y.skinId] > 1) - (cnt[x.skinId] > 1)) || (mx[y.skinId] - mx[x.skinId]) || x.skinId.localeCompare(y.skinId) || (y.price - x.price));
+            list.innerHTML = items.map((i, idx) => {
+                const r = RARITIES[i.rarity] || RARITIES.common;
+                return `<div data-uid="${i.uid}" data-skin="${i.skinId}" data-tw="${cnt[i.skinId]}" onclick="mergerPick('${i.uid}')" class="mpick cursor-pointer rounded-xl p-2.5 ${r.cardClass} transition relative">
+                    <span class="mtag absolute top-1 right-1 z-10 text-[10px] font-black text-white bg-black/70 rounded px-1.5 empty:hidden"></span>
+                    <div class="w-20 h-20 mx-auto">${mSvg(i, 'mrgpick_' + idx)}</div>
+                    <div class="text-xs font-display font-bold text-white truncate mt-1">${i.name}</div>
+                    <div class="flex justify-between text-[10px] font-mono-tech"><span class="text-emerald-400 font-bold">${formatMoney(i.price)}</span><span class="text-slate-400">${i.locked ? '🔒' : ''}${fusedOf(i) > 1 ? '🧬×' + fusedOf(i) : ''}${cnt[i.skinId] > 1 ? '' : ' solo'}</span></div></div>`;
+            }).join('') || '<p class="col-span-full text-xs text-slate-500">Your inventory is empty.</p>';
+        }
+
+        function renderMerger(rebuild = true) {
+            const { A, B } = mergerPair();
+            MU.color = A ? (RARITIES[A.rarity] || RARITIES.common).color : '#ffd700';
+            const st = getEl('mergerStage'); if (st) st.style.setProperty('--mrg', MU.color);
+            if (!MU.busy) { setHtml('mergerSlotA', slotHTML(A, 'A')); setHtml('mergerSlotB', slotHTML(B, 'B')); mergerRenderCore(A, B); }
+            const btn = getEl('mergerHoldBtn'); if (btn) btn.disabled = MU.busy || !(A && B);
+            setText('mergerStatFusions', String(state.mergesDone || 0));
+            setText('mergerStatBest', '×' + (state.bestFused || 1));
+            if (rebuild && !MU.busy) mergerRenderPicker();
+            mergerPickerStates();
+        }
+
+        function mergerPick(uid) {
+            const it = mItem(uid); if (MU.busy || !it) return;
+            const A = mItem(MU.a); MU.last = null;
+            if (uid === MU.a) { MU.a = MU.b; MU.b = null; }
+            else if (uid === MU.b) MU.b = null;
+            else if (A && A.skinId === it.skinId) MU.b = uid;
+            else { MU.a = uid; MU.b = null; }
+            sfx.playTick(1.2);
+            renderMerger(false);
+        }
+
+        function mergerAutoPick() {
+            if (MU.busy) return;
+            const g = {}; state.inventory.forEach(i => (g[i.skinId] = g[i.skinId] || []).push(i));
+            let best = null;
+            Object.values(g).forEach(a => {
+                if (a.length < 2) return;
+                a.sort((x, y) => y.price - x.price);
+                const s = a[0].price + a[1].price;
+                if (!best || s > best.s) best = { s, a: a[0], b: a[1] };
+            });
+            if (!best) { showToast('No identical Nalles to merge yet.', 'error'); return; }
+            MU.last = null; MU.a = best.a.uid; MU.b = best.b.uid;
+            sfx.playTick(1.3); renderMerger(false);
+        }
+
+        /* ---------- Reactor audio ---------- */
+        const MergeAudio = {
+            n: null,
+            set(c) {
+                if (!sfx.enabled) return; sfx.init(); const x = sfx.ctx; if (!x) return;
+                if (!this.n) {
+                    const o1 = x.createOscillator(), o2 = x.createOscillator(), f = x.createBiquadFilter(), g = x.createGain();
+                    o1.type = 'sawtooth'; o2.type = 'triangle'; f.type = 'lowpass'; f.Q.value = 7; g.gain.value = 0.0001;
+                    o1.connect(f); o2.connect(f); f.connect(g); g.connect(x.destination); o1.start(); o2.start();
+                    this.n = { o1, o2, f, g };
+                }
+                const n = this.n, t = x.currentTime, q = 60 + c * c * 440;
+                n.o1.frequency.setTargetAtTime(q, t, .05); n.o2.frequency.setTargetAtTime(q * 1.5, t, .05);
+                n.f.frequency.setTargetAtTime(250 + c * 3000, t, .06); n.g.gain.setTargetAtTime(.0001 + c * .08, t, .05);
+            },
+            stop() {
+                const n = this.n; if (!n) return; this.n = null;
+                const t = sfx.ctx.currentTime; n.g.gain.setTargetAtTime(.0001, t, .03); n.o1.stop(t + .25); n.o2.stop(t + .25);
+            },
+            boom(I, rarity) {
+                if (!sfx.enabled) return; sfx.init(); const x = sfx.ctx; if (!x) return;
+                const t = x.currentTime, o = x.createOscillator(), g = x.createGain();
+                o.type = 'sine'; o.frequency.setValueAtTime(170, t); o.frequency.exponentialRampToValueAtTime(28, t + 1.2);
+                g.gain.setValueAtTime(.3 + .2 * I, t); g.gain.exponentialRampToValueAtTime(.001, t + 1.4);
+                o.connect(g); g.connect(x.destination); o.start(t); o.stop(t + 1.5);
+                const len = x.sampleRate, buf = x.createBuffer(1, len, x.sampleRate), d = buf.getChannelData(0);
+                for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2);
+                const s = x.createBufferSource(), bp = x.createBiquadFilter(), ng = x.createGain();
+                s.buffer = buf; bp.type = 'bandpass'; bp.frequency.setValueAtTime(5000, t); bp.frequency.exponentialRampToValueAtTime(200, t + .9);
+                ng.gain.value = .4; s.connect(bp); bp.connect(ng); ng.connect(x.destination); s.start(t);
+                setTimeout(() => sfx.playDropFanfare(rarity), 220);
+            }
+        };
+
+        /* ---------- Canvas FX engine (additive particles, tethers, lightning, shockwaves) ---------- */
+        function mfxResize() {
+            const st = getEl('mergerStage'), cv = MFX.cv; if (!st || !cv) return;
+            const r = st.getBoundingClientRect(); if (!r.width) return;
+            const d = Math.min(2, window.devicePixelRatio || 1);
+            cv.width = r.width * d; cv.height = r.height * d; MFX.cx.setTransform(d, 0, 0, d, 0, 0);
+            MFX.w = r.width; MFX.h = r.height;
+        }
+        function mfxPos(el) {
+            const s = getEl('mergerStage').getBoundingClientRect(), r = el.getBoundingClientRect();
+            return { x: r.left - s.left + r.width / 2, y: r.top - s.top + r.height / 2 };
+        }
+        function mfxBurst(x, y, color, n, speed, life) {
+            for (let i = 0; i < n; i++) {
+                const a = Math.random() * 6.283, v = speed * (0.2 + Math.random() * 0.8);
+                MFX.parts.push({ x, y, px: x, py: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, l: life * (0.5 + Math.random() * 0.6), m: life, s: 1 + Math.random() * 2.2, c: Math.random() < 0.25 ? '#ffffff' : color, g: 120 });
+            }
+        }
+        function mfxRing(x, y, color, R, life, delay = 0) { MFX.rings.push({ x, y, R, l: life, m: life, c: color, d: delay }); }
+        function mfxBolt(a, b, color) {
+            let pts = [a, b], d = Math.hypot(b.x - a.x, b.y - a.y) * 0.12;
+            for (let k = 0; k < 4; k++) {
+                const n = [pts[0]];
+                for (let i = 0; i < pts.length - 1; i++) {
+                    const p = pts[i], q = pts[i + 1];
+                    n.push({ x: (p.x + q.x) / 2 + (Math.random() - .5) * d, y: (p.y + q.y) / 2 + (Math.random() - .5) * d }, q);
+                }
+                pts = n; d *= 0.5;
+            }
+            MFX.bolts.push({ pts, c: color, l: 0.12 });
+        }
+
+        function mfxFrame(now) {
+            if (!MFX.on) return;
+            MFX.raf = requestAnimationFrame(mfxFrame);
+            const dt = Math.min(0.05, (now - MFX.t0) / 1000 || 0.016); MFX.t0 = now;
+            if (document.hidden) return;
+            const cx = MFX.cx, core = getEl('mergerCore');
+            if (!cx || !core) return;
+            if (!MFX.w) { mfxResize(); return; }
+
+            // Charge logic (hold-to-fuse)
+            if (!MU.busy) {
+                if (MU.holding) {
+                    MU.charge += dt / 1.1;
+                    if (MU.charge >= 1) { MU.charge = 1; MU.holding = false; mergerExecute(); }
+                } else MU.charge = Math.max(0, MU.charge - dt * 2.2);
+                if (MU.holding || MU.charge > 0) MergeAudio.set(MU.charge); else MergeAudio.stop();
+                const btn = getEl('mergerHoldBtn');
+                if (btn) btn.style.setProperty('--p', (MU.charge * 100) + '%');
+                setText('mergerHoldLabel', !(MU.a && MU.b) ? 'SELECT TWO IDENTICAL NALLES' : (MU.charge > 0 ? `CHARGING ${Math.round(MU.charge * 100)}%` : '🧬 HOLD TO FUSE'));
+            } else setText('mergerHoldLabel', 'FUSING...');
+            const c = MU.charge, col = MU.color, tm = now / 1000;
+
+            // Reactor rings (JS driven so speed follows charge)
+            const sp = [22, -38, 60];
+            MFX.ang = MFX.ang.map((a, i) => a + sp[i] * (1 + c * 14 + (MU.busy ? 10 : 0)) * dt);
+            MFX.ang.forEach((a, i) => { const g = getEl('mrgR' + (i + 1)); if (g) g.setAttribute('transform', `rotate(${a} 140 140)`); });
+            const pr = getEl('mrgProg'); if (pr) pr.setAttribute('stroke-dasharray', `${c * 2 * Math.PI * 126} 999`);
+            MFX.kick = Math.max(0, MFX.kick - dt * 0.5);
+            core.style.transform = `scale(${1 + c * 0.05 + MFX.kick})`;
+
+            cx.clearRect(0, 0, MFX.w, MFX.h);
+            cx.globalCompositeOperation = 'lighter'; cx.lineCap = 'round';
+            const O = mfxPos(core);
+
+            // Core glow
+            const gr = cx.createRadialGradient(O.x, O.y, 0, O.x, O.y, 70 + c * 90 + MFX.kick * 300);
+            gr.addColorStop(0, rgb(col, 0.1 + c * 0.45)); gr.addColorStop(1, rgb(col, 0));
+            cx.fillStyle = gr; cx.fillRect(0, 0, MFX.w, MFX.h);
+
+            // Energy tethers between slots and the core
+            if (MFX.tether) ['A', 'B'].forEach((s, k) => {
+                const el = getEl('mergerCard' + s); if (!el) return;
+                const P = mfxPos(el), rdy = MU.a && MU.b, N = 28, nx = -(O.y - P.y), ny = O.x - P.x, L = Math.hypot(nx, ny) || 1;
+                for (let pass = 0; pass < 2; pass++) {
+                    cx.beginPath();
+                    for (let i = 0; i <= N; i++) {
+                        const u = i / N, w = Math.sin(u * 14 - tm * (6 + c * 30) + k * 2) * Math.sin(u * Math.PI) * (rdy ? 6 + c * 18 : 2);
+                        const x = P.x + (O.x - P.x) * u + nx / L * w, y = P.y + (O.y - P.y) * u + ny / L * w;
+                        i ? cx.lineTo(x, y) : cx.moveTo(x, y);
+                    }
+                    cx.strokeStyle = rgb(col, pass ? 0.5 + c * 0.45 : 0.1 + c * 0.15); cx.lineWidth = pass ? 1.2 + c * 1.5 : 5 + c * 6; cx.stroke();
+                }
+                if (rdy) {
+                    const u = (tm * (0.5 + c * 2) + k * 0.5) % 1;
+                    cx.fillStyle = rgb('#ffffff', 0.9); cx.beginPath(); cx.arc(P.x + (O.x - P.x) * u, P.y + (O.y - P.y) * u, 3 + c * 3, 0, 6.283); cx.fill();
+                    if (Math.random() < c * 0.5) mfxBolt(P, O, col);
+                    if (Math.random() < c * 2) MFX.parts.push({ x: P.x + (Math.random() - .5) * 80, y: P.y + (Math.random() - .5) * 80, px: P.x, py: P.y, vx: (O.x - P.x) * 2.2, vy: (O.y - P.y) * 2.2, l: .5, m: .5, s: 1.6, c: col, g: 0 });
+                }
+            });
+
+            // Trails behind flying cards
+            MFX.trails.forEach(el => {
+                const P = mfxPos(el);
+                for (let i = 0; i < 3; i++) MFX.parts.push({ x: P.x, y: P.y, px: P.x, py: P.y, vx: (Math.random() - .5) * 120, vy: (Math.random() - .5) * 120, l: .4, m: .4, s: 2.2, c: Math.random() < .3 ? '#ffffff' : col, g: 0 });
+            });
+            if (Math.random() < 0.12) { const a = Math.random() * 6.283; MFX.parts.push({ x: O.x + Math.cos(a) * 150, y: O.y + Math.sin(a) * 150, px: O.x, py: O.y, vx: -Math.cos(a) * 40, vy: -Math.sin(a) * 40, l: 1.6, m: 1.6, s: 1.4, c: col, g: 0 }); }
+
+            // Particles (streaks)
+            for (let i = MFX.parts.length - 1; i >= 0; i--) {
+                const p = MFX.parts[i]; p.l -= dt;
+                if (p.l <= 0) { MFX.parts.splice(i, 1); continue; }
+                p.px = p.x; p.py = p.y;
+                p.vx *= 1 - 1.8 * dt; p.vy = p.vy * (1 - 1.8 * dt) + p.g * dt;
+                p.x += p.vx * dt; p.y += p.vy * dt;
+                cx.strokeStyle = rgb(p.c, clamp(p.l / p.m, 0, 1)); cx.lineWidth = p.s;
+                cx.beginPath(); cx.moveTo(p.px - p.vx * 0.012, p.py - p.vy * 0.012); cx.lineTo(p.x, p.y); cx.stroke();
+            }
+            // Shockwave rings
+            for (let i = MFX.rings.length - 1; i >= 0; i--) {
+                const r = MFX.rings[i];
+                if (r.d > 0) { r.d -= dt; continue; }
+                r.l -= dt; if (r.l <= 0) { MFX.rings.splice(i, 1); continue; }
+                const u = 1 - r.l / r.m;
+                cx.strokeStyle = rgb(r.c, 1 - u); cx.lineWidth = 8 * (1 - u) + 1;
+                cx.beginPath(); cx.arc(r.x, r.y, r.R * Math.pow(u, 0.6), 0, 6.283); cx.stroke();
+            }
+            // Lightning
+            for (let i = MFX.bolts.length - 1; i >= 0; i--) {
+                const b = MFX.bolts[i]; b.l -= dt;
+                if (b.l <= 0) { MFX.bolts.splice(i, 1); continue; }
+                [[6, 0.25, b.c], [1.6, 0.95, '#ffffff']].forEach(([w, a, cc]) => {
+                    cx.beginPath(); b.pts.forEach((p, j) => j ? cx.lineTo(p.x, p.y) : cx.moveTo(p.x, p.y));
+                    cx.strokeStyle = rgb(cc, a); cx.lineWidth = w; cx.stroke();
+                });
+            }
+            cx.globalCompositeOperation = 'source-over';
+        }
+
+        function mfxStart() {
+            if (MFX.on) return;
+            MFX.cv = getEl('mergerFx'); if (!MFX.cv) return;
+            MFX.cx = MFX.cv.getContext('2d'); mfxResize();
+            MFX.on = true; MFX.t0 = performance.now(); MFX.raf = requestAnimationFrame(mfxFrame);
+        }
+        function mfxStop() {
+            MFX.on = false; cancelAnimationFrame(MFX.raf);
+            MergeAudio.stop(); MU.holding = false; MU.charge = 0;
+        }
+        window.addEventListener('resize', () => { if (MFX.on) mfxResize(); });
+
+        /* ---------- Fusion sequence ---------- */
+        async function mergerExecute() {
+            if (MU.busy) return;
+            const { A, B } = mergerPair(); if (!A || !B) return;
+            MU.busy = true; MU.last = null; MU.holding = false;
+            const R = mergeResult(A, B);
+
+            // Commit atomically BEFORE animating: no exploits via reload/sell during the show
+            state.inventory = state.inventory.filter(i => i.uid !== A.uid && i.uid !== B.uid);
+            state.inventory.unshift(R);
+            state.mergesDone = (state.mergesDone || 0) + 1;
+            state.bestFused = Math.max(state.bestFused || 1, R.fusedCount);
+            if (R.price > state.bestPullValue) state.bestPullValue = R.price;
+            saveGame();
+            const btn = getEl('mergerHoldBtn'); if (btn) btn.disabled = true;
+
+            try { await mergerPlay(A, B, R); } catch (e) { console.error(e); }
+
+            MU.busy = false; MU.a = MU.b = null; MU.last = R; MU.charge = 0; MFX.trails = []; MFX.tether = true;
+            updateHUD(); renderFullInventory(); renderUpgraderTab(); renderMerger();
+            pushDropToLiveTicker({ ...R, name: `${R.name} 🧬×${R.fusedCount}` }, true);
+            showToast(`🧬 Fused ${fusedOf(R)} Nalles into ${R.name} (${formatMoney(R.price)})!`, R.rarity === 'santa' ? 'santa' : (R.rarity === 'snowman' ? 'snowman' : (R.price >= 1000 ? 'gold' : 'success')));
+        }
+
+        async function mergerPlay(A, B, R) {
+            const k = state.fastSpin ? 0.55 : 1, col = (RARITIES[R.rarity] || RARITIES.common).color;
+            const I = clamp((Math.log10(Math.max(10, R.price)) - 1) / 5, 0.25, 1);
+            const core = getEl('mergerCore'), h = getEl('mergerCoreContent'), hint = getEl('mergerHint');
+            h.style.transition = 'opacity .25s'; h.style.opacity = 0; hint.textContent = 'FUSING...';
+            MU.charge = 1; MergeAudio.set(1);
+
+            // 1) Wind-up, then both Nalles are sucked into the core
+            const O = mfxPos(core), els = ['A', 'B'].map(s => getEl('mergerCard' + s));
+            const anims = els.map((el, i) => {
+                const P = mfxPos(el), dx = O.x - P.x, dy = O.y - P.y, d = i ? 1 : -1;
+                MFX.trails.push(el);
+                return el.animate([
+                    { transform: 'none', filter: 'brightness(1)', easing: 'ease-out' },
+                    { offset: .3, transform: `translate(${-dx * .07}px,${-dy * .07}px) scale(1.07) rotate(${-3 * d}deg)`, filter: 'brightness(1.5)', easing: 'cubic-bezier(.7,0,1,.45)' },
+                    { transform: `translate(${dx}px,${dy}px) scale(.2) rotate(${360 * d}deg)`, filter: 'brightness(3) blur(3px)' }
+                ], { duration: 1050 * k, fill: 'forwards' });
+            });
+            await Promise.all(anims.map(a => a.finished));
+            els.forEach(el => { el.style.visibility = 'hidden'; });
+
+            // 2) Impact: flash, shockwaves, particle burst, screen shake, boom
+            MFX.trails = []; MFX.tether = false; MU.charge = 0; MergeAudio.stop(); MergeAudio.boom(I, R.rarity);
+            [0, .1, .22].forEach((d, i) => mfxRing(O.x, O.y, i === 2 ? '#ffffff' : col, 220 + I * 300, .9 + i * .15, d));
+            mfxBurst(O.x, O.y, col, Math.round(140 + 380 * I), 380 + 520 * I, 1.1);
+            mfxBurst(O.x, O.y, '#ffd700', Math.round(60 + 160 * I), 600, .9);
+            MFX.kick = .15;
+            getEl('mergerFlash').animate([{ opacity: 0 }, { opacity: .95, offset: .1 }, { opacity: 0 }], { duration: (600 + I * 500) * k });
+            document.body.classList.add('shake-active'); setTimeout(() => document.body.classList.remove('shake-active'), 750);
+            await wait(160 * k);
+
+            // 3) Reveal: 3D flip-in, count-up of the value, stamp slam
+            h.dataset.uid = R.uid; h.innerHTML = resultHTML(R); h.style.opacity = 1;
+            getEl('mergerRays').classList.add('on');
+            const card = getEl('mergerResultCard'), pr = getEl('mergerResultPrice'), st = getEl('mergerStamp');
+            st.style.opacity = 0; pr.textContent = formatMoney(Math.max(A.price, B.price));
+            await card.animate([
+                { transform: 'perspective(700px) rotateY(180deg) scale(.1)', opacity: 0, filter: 'brightness(5)' },
+                { offset: .6, transform: 'perspective(700px) rotateY(-12deg) scale(1.22)', opacity: 1, filter: 'brightness(1.8)' },
+                { transform: 'perspective(700px) rotateY(0deg) scale(1)', opacity: 1, filter: 'brightness(1)' }
+            ], { duration: 950 * k, easing: 'cubic-bezier(.2,.8,.3,1)' }).finished;
+
+            hint.textContent = `${formatMoney(A.price)} + ${formatMoney(B.price)}`;
+            const from = Math.max(A.price, B.price), T = 1300 * k, t0 = performance.now();
+            let lt = 0;
+            await new Promise(res => {
+                const step = n => {
+                    const u = clamp((n - t0) / T, 0, 1), e = u >= 1 ? 1 : 1 - Math.pow(2, -10 * u);
+                    pr.textContent = formatMoney(from + (R.price - from) * e);
+                    if (n - lt > 70 && u < 1) { lt = n; sfx.playTick(1 + u * .9); }
+                    u < 1 ? requestAnimationFrame(step) : res();
+                };
+                requestAnimationFrame(step);
+            });
+            st.style.opacity = 1;
+            st.animate([{ transform: 'scale(3.2) rotate(-25deg)', opacity: 0 }, { transform: 'scale(1) rotate(12deg)', opacity: 1 }], { duration: 260 * k, easing: 'cubic-bezier(.2,1.4,.4,1)' });
+            mfxRing(O.x, O.y, '#ffffff', 160, .5); mfxBurst(O.x, O.y, col, 60, 260, .7); MFX.kick = .06;
+            hint.textContent = `${formatMoney(A.price)} + ${formatMoney(B.price)} = ${formatMoney(R.price)}`;
+            if (R.price >= 100000 || R.rarity === 'santa' || R.rarity === 'snowman') triggerBlizzardShow();
+            await wait(450 * k);
+        }
+
+        function initMerger() {
+            const b = getEl('mergerHoldBtn'); if (!b) return;
+            const down = e => {
+                if (MU.busy) return;
+                if (e.type === 'pointerdown' && e.button > 0) return;
+                const { A, B } = mergerPair();
+                if (!A || !B) { showToast('Pick two identical Nalles first.', 'error'); return; }
+                MU.holding = true;
+                if (e.pointerId != null) { try { b.setPointerCapture(e.pointerId); } catch (_) {} }
+            };
+            const up = () => { MU.holding = false; };
+            b.addEventListener('pointerdown', e => { e.preventDefault(); down(e); });
+            ['pointerup', 'pointercancel'].forEach(t => b.addEventListener(t, up));
+            b.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); down(e); } });
+            b.addEventListener('keyup', up);
+            b.addEventListener('blur', up);
+            b.addEventListener('contextmenu', e => e.preventDefault());
+            window.addEventListener('blur', up);
+            renderMerger();
+        }
+
+        /**************************************************************
+         * 12. INITIALIZATION
+         **************************************************************/
+        function initApp() {
+            loadGame();
+            renderCaseSelector();
+            renderCaseContentsCatalog();
+            populateInitialReels();
+            updateHUD();
+            renderFullInventory();
+            initMerger();
+
+            resizeSnow();
+            animateAmbientSnow();
+            runBlizzardLoop();
+
+            for (let i = 0; i < 6; i++) {
+                pushDropToLiveTicker(rollSkin(CASES[0]), false);
+            }
+            setInterval(() => {
+                if (document.hidden) return;
+                pushDropToLiveTicker(rollSkin(CASES[0]), false);
+            }, 4500);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+    </script>
+</body>
+</html>
